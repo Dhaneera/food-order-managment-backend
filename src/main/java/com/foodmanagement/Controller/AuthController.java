@@ -24,6 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,27 +53,43 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDto>login(@RequestBody LoginDto loginDto, HttpServletResponse response){
-        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
+        // Authenticate the user
+        Authentication authenticate = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
+        );
+
+        // Set the authentication context
         SecurityContextHolder.getContext().setAuthentication(authenticate);
+
+        // Generate access and refresh tokens
         String accessToken = jwtTokenGenerator.generateAccessToken(authenticate);
         String refreshToken = jwtTokenGenerator.generateRefreshToken(authenticate);
 
-        User user = usersRepository.findByUsername(loginDto.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
-        List<String> roles = user.getRoles().stream().map(Role::getName).collect(Collectors.toList());
+        // Find the user by username
+        User user = usersRepository.findByUsername(loginDto.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
+        // Extract roles
+        List<String> roles = user.getRoles().stream()
+                .map(Role::getName)
+                .collect(Collectors.toList());
 
-        Cookie refreshTokenCookie = new Cookie("refreshToken",refreshToken);
+        // Retrieve the role id (assuming the user has one role)
+        Long roleId = user.getRoles().isEmpty() ? null : user.getRoles().get(0).getId();
+
+        // Set the refresh token in a cookie
+        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setSecure(true);
         refreshTokenCookie.setPath("/");
-        refreshTokenCookie.setMaxAge((int) SecurityConstance.JWT_REFRESH_EXPIRATION/1000);
-
+        refreshTokenCookie.setMaxAge((int) SecurityConstance.JWT_REFRESH_EXPIRATION / 1000);
         response.addCookie(refreshTokenCookie);
 
-
-        return new ResponseEntity<>(new AuthResponseDto(accessToken,refreshToken,roles),HttpStatus.OK);
+        // Return the response including userId, roleId, and tokens
+        return new ResponseEntity<>(new AuthResponseDto(accessToken, refreshToken, roles, user.getId(), roleId), HttpStatus.OK);
     }
+
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
 
@@ -89,31 +106,72 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
+        // Check if the username already exists
         if (usersRepository.existsByUsername(registerDto.getUsername())) {
             return new ResponseEntity<>("User name is taken", HttpStatus.BAD_REQUEST);
         }
 
+        // Create new User object
         User user = new User();
         user.setUsername(registerDto.getUsername());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
 
-        Role role = roleRepository.findByName("ROLE_USER");
+        // Get or create the appropriate role
+        Role role;
+        switch (registerDto.getRoleType().toLowerCase()) {
+            case "staff":
+                role = roleRepository.findByName("ROLE_STAFF");
+                if (role == null) {
+                    role = new Role();
+                    role.setName("ROLE_STAFF");
+                    roleRepository.save(role);
+                }
+                break;
+            case "admin":
+                // Ensure that admin role exists
+                role = roleRepository.findByName("ROLE_ADMIN");
+                if (role == null) {
+                    role = new Role();
+                    role.setName("ROLE_ADMIN");
+                    roleRepository.save(role);
+                }
+                break;
+            case "student":
+                role = roleRepository.findByName("ROLE_STUDENT");
+                if (role == null) {
+                    role = new Role();
+                    role.setName("ROLE_STUDENT");
+                    roleRepository.save(role);
+                }
+                break;
+            default:
+                return new ResponseEntity<>("Invalid role type", HttpStatus.BAD_REQUEST);
+        }
 
+        // Set the role for the user
         user.setRoles(Collections.singletonList(role));
 
+        // Save the user to the repository
         usersRepository.save(user);
 
-        return new ResponseEntity<>("User register Success!", HttpStatus.OK);
+        return new ResponseEntity<>("User registered successfully!", HttpStatus.OK);
     }
 
     @PostMapping("/refresh-token")
     public ResponseEntity<AuthResponseDto> refreshToken(@CookieValue(value = "refreshToken", defaultValue = "") String refreshToken) {
+
         if (jwtTokenGenerator.validateToken(refreshToken)) {
             String username = jwtTokenGenerator.getUsernameFromJWT(refreshToken);
             Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
             String newAccessToken = jwtTokenGenerator.generateAccessToken(authentication);
+            User user = usersRepository.findByUsername(username)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            List<String> roles = user.getRoles().stream()
+                    .map(Role::getName)
+                    .collect(Collectors.toList());
+            Long roleId = user.getRoles().isEmpty() ? null : user.getRoles().get(0).getId();  // Assuming single role per user
 
-            return new ResponseEntity<>(new AuthResponseDto(newAccessToken, refreshToken, null), HttpStatus.OK);
+            return new ResponseEntity<>(new AuthResponseDto(newAccessToken, refreshToken, roles, user.getId(), roleId), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }

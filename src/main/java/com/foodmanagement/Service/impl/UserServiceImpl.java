@@ -8,6 +8,8 @@ import com.foodmanagement.Service.UsersService;
 import com.foodmanagement.dto.UsersDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +52,11 @@ public class UserServiceImpl implements UsersService {
             User user = existingUser.get();
             user.setUsername(userDto.getUsername());
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            user.setName(userDto.getName());
+            user.setPhoneNumber(userDto.getPhoneNumber());
+            user.setMail(userDto.getMail());
+            user.setStatus(userDto.getStatus());
+            user.setUpdatedBy(userDto.getUpdatedBy());
 
             return userRepository.save(user);
         } else {
@@ -57,8 +64,14 @@ public class UserServiceImpl implements UsersService {
         }
     }
     @Override
-    public void deleteUser(Long id) {
+    public boolean deleteUser(Long id) {
         userRepository.deleteById(id);
+        return false;
+    }
+
+    @Override
+    public Page<User> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     @Override
@@ -73,6 +86,11 @@ public class UserServiceImpl implements UsersService {
                                 .collect(Collectors.toList()))
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<User> getStudentById(Long id) {
+        return userRepository.findById(id);
     }
 
 

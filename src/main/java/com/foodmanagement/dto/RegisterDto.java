@@ -18,4 +18,5 @@ public class RegisterDto {
     private Long id;
     private  String username;
     private String password;
+    private String roleType;
 }
