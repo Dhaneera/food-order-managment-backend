@@ -54,31 +54,29 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
-        // Authenticate the user
+
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
         );
 
-        // Set the authentication context
         SecurityContextHolder.getContext().setAuthentication(authenticate);
 
-        // Generate access and refresh tokens
         String accessToken = jwtTokenGenerator.generateAccessToken(authenticate);
         String refreshToken = jwtTokenGenerator.generateRefreshToken(authenticate);
 
-        // Find the user by username
+
         User user = usersRepository.findByUsername(loginDto.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Extract roles
+
         List<String> roles = user.getRoles().stream()
                 .map(Role::getName)
                 .collect(Collectors.toList());
 
-        // Retrieve the role id (assuming the user has one role)
+
         Long roleId = user.getRoles().isEmpty() ? null : user.getRoles().get(0).getId();
 
-        // Set the refresh token in a cookie
+
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setSecure(true);
@@ -99,7 +97,6 @@ public class AuthController {
         response.addCookie(refreshTokenCookie);
 
 
-
         return ResponseEntity.ok("Logged out successfully");
     }
 
@@ -111,7 +108,7 @@ public class AuthController {
             return new ResponseEntity<>("User name is taken", HttpStatus.BAD_REQUEST);
         }
 
-        // Create new User object
+
         User user = new User();
         user.setUsername(registerDto.getUsername());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
