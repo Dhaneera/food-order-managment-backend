@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 
 @Component("student")
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class StudentStrategyImpl implements UserStrategies {
     private final UsersRepository usersRepository;
     @Override
     public CommonResponse<User> saveUser(RegisterDto registerDto) {
-        if(usersRepository.existsByUsername(registerDto.getPhoneNumber())){
+        if(Boolean.TRUE.equals(usersRepository.existsByUsername(registerDto.getPhoneNumber()))){
             return new CommonResponse<User>(0001,"User already exists",null);
         }
         Role role = roleRepository.findByName("ROLE_STUDENT");
@@ -38,6 +39,7 @@ public class StudentStrategyImpl implements UserStrategies {
         user.setMail(registerDto.getMail());
         user.setPassword(registerDto.getPassword());
         user.setStatus("ACTIVE");
+        user.setRoles(Collections.singletonList(role));
 
         usersRepository.save(user);
         return new CommonResponse<User>(0000,"Successful",user);

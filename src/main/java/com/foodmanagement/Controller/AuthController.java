@@ -57,12 +57,8 @@ public class AuthController {
         this.authService=authService;
     }
 
-
-
-
-
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDto>   login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
+    public ResponseEntity<AuthResponseDto>login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
 
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
@@ -98,7 +94,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<CommonResponse<?>> logout(HttpServletRequest request, HttpServletResponse response) {
 
         Cookie refreshTokenCookie = new Cookie("refreshToken", null);
         refreshTokenCookie.setPath("/");
@@ -106,14 +102,15 @@ public class AuthController {
         response.addCookie(refreshTokenCookie);
 
 
-        return ResponseEntity.ok("Logged out successfully");
+        return ResponseEntity.ok(new CommonResponse<>(200, "Logout successful", null));
     }
 
 
     @PostMapping("/register")
-    public CommonResponse register(@RequestBody RegisterDto registerDto) {
+    public ResponseEntity<CommonResponse<User>> register(@RequestBody RegisterDto registerDto) {
         registerDto.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-        return authService.register(registerDto);
+        CommonResponse commonResponse=authService.register(registerDto);
+        return new ResponseEntity<CommonResponse<User>>(commonResponse, HttpStatus.OK);
     }
 
     @PostMapping("/refresh-token")
