@@ -26,4 +26,5 @@ public class Priest {
     private String updatedBy ;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
 }

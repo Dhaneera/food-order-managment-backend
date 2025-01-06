@@ -30,6 +30,7 @@ public class UsersDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+
     public @Valid Long getId() {
         return id;
     }

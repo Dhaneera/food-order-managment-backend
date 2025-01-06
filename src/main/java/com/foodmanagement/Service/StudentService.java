@@ -19,3 +19,4 @@ public interface StudentService {
 
     boolean deleteStudent(Long id);
 }
+

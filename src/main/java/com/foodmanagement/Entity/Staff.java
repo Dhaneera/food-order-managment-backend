@@ -17,3 +17,4 @@ public class Staff {
     @JoinColumn(name = "roleId", nullable = false)
     private Role role;
 }
+
