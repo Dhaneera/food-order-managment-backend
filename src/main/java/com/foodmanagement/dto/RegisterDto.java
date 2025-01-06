@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,4 +21,14 @@ public class RegisterDto {
     private  String username;
     private String password;
     private String roleType;
+    private String name;
+    private String phoneNumber;
+    private String mail;
+    private String status;
+    private String createdBy;
+    private String updatedBy;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+
 }

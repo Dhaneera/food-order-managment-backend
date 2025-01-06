@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +38,14 @@ public class UserServiceImpl implements UsersService {
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setName(userDto.getName());
+        user.setPhoneNumber(userDto.getPhoneNumber());
+        user.setMail(userDto.getMail());
+        user.setStatus("ACTIVE");
+        user.setCreatedBy("System");
+        user.setUpdatedBy("System");
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
         List<Role> roles = new ArrayList<>();
         roles.add(userRole);
         user.setRoles(roles);

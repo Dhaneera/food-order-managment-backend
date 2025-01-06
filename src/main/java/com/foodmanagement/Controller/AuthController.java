@@ -24,6 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -53,7 +54,7 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
+    public ResponseEntity<AuthResponseDto>   login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
 
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
@@ -112,6 +113,14 @@ public class AuthController {
         User user = new User();
         user.setUsername(registerDto.getUsername());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+        user.setName(registerDto.getName());
+        user.setPhoneNumber(registerDto.getPhoneNumber());
+        user.setMail(registerDto.getMail());
+        user.setStatus("ACTIVE");
+        user.setCreatedBy("System");
+        user.setUpdatedBy("System");
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
 
         // Get or create the appropriate role
         Role role;
