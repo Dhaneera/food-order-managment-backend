@@ -31,6 +31,7 @@ public class User {
     private String createdBy;
     private String updatedBy;
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})

@@ -22,5 +22,6 @@ public class AuthResponseDto {
         this.roles = roles;
         this.userId = userId;
         this.roleId = roleId;
+
     }
 }
