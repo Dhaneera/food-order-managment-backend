@@ -53,9 +53,6 @@ public class AuthController {
     }
 
 
-
-
-
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto>   login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
 
@@ -162,7 +159,6 @@ public class AuthController {
 
         // Save the user to the repository
         usersRepository.save(user);
-
         return new ResponseEntity<>("User registered successfully!", HttpStatus.OK);
     }
 
@@ -185,5 +181,4 @@ public class AuthController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
-
 }
