@@ -6,8 +6,11 @@ import com.foodmanagement.Entity.Role;
 import com.foodmanagement.Entity.User;
 import com.foodmanagement.Repository.RoleRepository;
 import com.foodmanagement.Repository.UsersRepository;
+import com.foodmanagement.Service.AuthService;
+import com.foodmanagement.Service.impl.AuthServiceImpl;
 import com.foodmanagement.Service.impl.CustomUserDetailServiceImpl;
 import com.foodmanagement.dto.AuthResponseDto;
+import com.foodmanagement.dto.CommonResponse;
 import com.foodmanagement.dto.LoginDto;
 import com.foodmanagement.dto.RegisterDto;
 import jakarta.servlet.http.Cookie;
@@ -42,19 +45,20 @@ public class AuthController {
 
     private CustomUserDetailServiceImpl customUserDetailService;
 
+    private AuthService authService;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UsersRepository usersRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtTokenGenerator jwtTokenGenerator) {
+    public AuthController(AuthenticationManager authenticationManager, UsersRepository usersRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtTokenGenerator jwtTokenGenerator, AuthServiceImpl authService) {
         this.authenticationManager = authenticationManager;
         this.usersRepository = usersRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenGenerator=jwtTokenGenerator;
+        this.authService=authService;
     }
 
-
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDto>   login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
+    public ResponseEntity<AuthResponseDto>login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
 
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
@@ -90,7 +94,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<CommonResponse<?>> logout(HttpServletRequest request, HttpServletResponse response) {
 
         Cookie refreshTokenCookie = new Cookie("refreshToken", null);
         refreshTokenCookie.setPath("/");
@@ -98,68 +102,16 @@ public class AuthController {
         response.addCookie(refreshTokenCookie);
 
 
-        return ResponseEntity.ok("Logged out successfully");
+        return ResponseEntity.ok(new CommonResponse<>(200, "Logout successful", null));
     }
 
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
-        // Check if the username already exists
-        if (usersRepository.existsByUsername(registerDto.getUsername())) {
-            return new ResponseEntity<>("User name is taken", HttpStatus.BAD_REQUEST);
-        }
 
-
-        User user = new User();
-        user.setUsername(registerDto.getUsername());
-        user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-        user.setName(registerDto.getName());
-        user.setPhoneNumber(registerDto.getPhoneNumber());
-        user.setMail(registerDto.getMail());
-        user.setStatus("ACTIVE");
-        user.setCreatedBy("System");
-        user.setUpdatedBy("System");
-        user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
-
-        // Get or create the appropriate role
-        Role role;
-        switch (registerDto.getRoleType().toLowerCase()) {
-            case "staff":
-                role = roleRepository.findByName("ROLE_STAFF");
-                if (role == null) {
-                    role = new Role();
-                    role.setName("ROLE_STAFF");
-                    roleRepository.save(role);
-                }
-                break;
-            case "admin":
-                // Ensure that admin role exists
-                role = roleRepository.findByName("ROLE_ADMIN");
-                if (role == null) {
-                    role = new Role();
-                    role.setName("ROLE_ADMIN");
-                    roleRepository.save(role);
-                }
-                break;
-            case "student":
-                role = roleRepository.findByName("ROLE_STUDENT");
-                if (role == null) {
-                    role = new Role();
-                    role.setName("ROLE_STUDENT");
-                    roleRepository.save(role);
-                }
-                break;
-            default:
-                return new ResponseEntity<>("Invalid role type", HttpStatus.BAD_REQUEST);
-        }
-
-        // Set the role for the user
-        user.setRoles(Collections.singletonList(role));
-
-        // Save the user to the repository
-        usersRepository.save(user);
-        return new ResponseEntity<>("User registered successfully!", HttpStatus.OK);
+    public ResponseEntity<CommonResponse<User>> register(@RequestBody RegisterDto registerDto) {
+        registerDto.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+        CommonResponse commonResponse=authService.register(registerDto);
+        return new ResponseEntity<CommonResponse<User>>(commonResponse, HttpStatus.OK);
     }
 
     @PostMapping("/refresh-token")

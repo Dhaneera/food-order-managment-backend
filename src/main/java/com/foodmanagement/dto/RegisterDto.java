@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 public class RegisterDto {
     @Valid
     private Long id;
-    private  String username;
     private String password;
     private String roleType;
     private String name;
