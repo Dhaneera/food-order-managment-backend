@@ -107,6 +107,7 @@ public class AuthController {
 
 
     @PostMapping("/register")
+
     public ResponseEntity<CommonResponse<User>> register(@RequestBody RegisterDto registerDto) {
         registerDto.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         CommonResponse commonResponse=authService.register(registerDto);
@@ -132,5 +133,4 @@ public class AuthController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
-
 }
