@@ -19,4 +19,5 @@ public class CorsConfig implements WebMvcConfigurer {
                 .maxAge(3600); // Max age of CORS options response
     }
 
+
 }

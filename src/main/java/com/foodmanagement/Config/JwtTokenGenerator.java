@@ -23,6 +23,8 @@ public class JwtTokenGenerator {
         return generateToken(authentication, SecurityConstance.JWT_REFRESH_EXPIRATION);
     }
 
+
+
     private String generateToken(Authentication authentication, long expirationTime) {
         String username = authentication.getName();
         Date currentDate = new Date();

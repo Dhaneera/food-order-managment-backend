@@ -1,12 +1,10 @@
 package com.foodmanagement.Repository;
 
-
-import com.foodmanagement.Entity.Role;
+import com.foodmanagement.Entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role,Long> {
-    Role findByName(String name);
+public interface StudentRepository extends JpaRepository<Student, Long> {
 }
 

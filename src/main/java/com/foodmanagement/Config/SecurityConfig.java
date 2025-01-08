@@ -26,6 +26,7 @@ public class SecurityConfig {
     private final CustomUserDetailServiceImpl customUserDetailServiceImpl;
 
 
+
     @Autowired
     public SecurityConfig(CustomUserDetailServiceImpl customUserDetailServiceImpl, JwtAuthEntryPoint jwtAuthEntryPoint) {
         this.customUserDetailServiceImpl = customUserDetailServiceImpl;

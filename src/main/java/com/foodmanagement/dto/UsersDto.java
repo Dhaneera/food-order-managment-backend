@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.validation.Valid;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -20,6 +21,15 @@ public class UsersDto {
     private String username;
     private String password;
     private List<String> roles;
+    private String name;
+    private String phoneNumber;
+    private String mail;
+    private String status;
+    private String createdBy;
+    private String updatedBy;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
 
     public @Valid Long getId() {
         return id;
