@@ -1,6 +1,6 @@
 package com.foodmanagement.Controller;
 
-import com.foodmanagement.Entity.Order;
+import com.foodmanagement.Entity.Orders;
 import com.foodmanagement.Service.OrderService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,8 +23,8 @@ public class OrderController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<Order> placeOrder(@RequestBody Order order) {
-        Order createdOrder = orderService.placeOrder(order);
+    public ResponseEntity<Orders> placeOrder(@RequestBody Orders order) {
+        Orders createdOrder = orderService.placeOrder(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
     }
 
@@ -43,15 +43,15 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Order>> getAllOrders(Pageable pageable) {
-        Page<Order> orders = orderService.getAllOrders(pageable);
+    public ResponseEntity<Page<Orders>> getAllOrders(Pageable pageable) {
+        Page<Orders> orders = orderService.getAllOrders(pageable);
         return ResponseEntity.ok(orders);
     }
 
     // Endpoint to retrieve an order by its ID
     @GetMapping("/{id}")
-    public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
-        Optional<Order> order = orderService.getOrderById(id);
+    public ResponseEntity<Orders> getOrderById(@PathVariable Long id) {
+        Optional<Orders> order = orderService.getOrderById(id);
         return order.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }

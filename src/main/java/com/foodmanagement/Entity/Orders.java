@@ -1,5 +1,4 @@
 package com.foodmanagement.Entity;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -10,8 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Orders")
-public class Order {
+public class Orders {
     @Id
     @Column(name = "ordersId")
     private String Id;

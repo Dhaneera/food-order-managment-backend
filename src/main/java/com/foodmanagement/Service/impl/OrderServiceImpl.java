@@ -1,6 +1,6 @@
 package com.foodmanagement.Service.impl;
 
-import com.foodmanagement.Entity.Order;
+import com.foodmanagement.Entity.Orders;
 import com.foodmanagement.Repository.OrderRepository;
 import com.foodmanagement.Service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class OrderServiceImpl implements OrderService {
     private  final OrderRepository orderRepository;
 
     @Override
-    public Order placeOrder(Order order) {
+    public Orders placeOrder(Orders order) {
         order.setId(generateUUID());
         return orderRepository.save(order);
     }
@@ -25,12 +25,12 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public Page<Order> getAllOrders(Pageable pageable) {
+    public Page<Orders> getAllOrders(Pageable pageable) {
         return orderRepository.findAll(pageable);
     }
 
     @Override
-    public Optional<Order> getOrderById(Long id) {
+    public Optional<Orders> getOrderById(Long id) {
         return orderRepository.findById(id);
     }
 
