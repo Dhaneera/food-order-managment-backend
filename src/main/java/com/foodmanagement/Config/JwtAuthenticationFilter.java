@@ -58,7 +58,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             newRefreshTokenCookie.setMaxAge(maxAgeInSeconds);
             response.setHeader("Set-Cookie", String.format("%s=%s; Path=%s; Max-Age=%d; HttpOnly; Secure", cookieName, cookieValue, path, refreshTokenExpirationInSeconds));
         }
-
         filterChain.doFilter(request, response);
     }
 

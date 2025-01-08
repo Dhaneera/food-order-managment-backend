@@ -42,4 +42,8 @@ public class User {
     private List<Role>roles= new ArrayList<>();
 
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    private List<Student> students;
+
+
 }
