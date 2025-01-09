@@ -5,9 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public interface OrderService {
     Orders placeOrder(Orders order);
     Page<Orders>getAllOrders(Pageable pageable);
-    Optional<Orders> getOrderById(Long id);
+    Optional<Orders> getOrderById(UUID id);
+    Page<Orders> getOrdersByStatus(String status, Pageable pageable);
 }

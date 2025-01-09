@@ -49,6 +49,8 @@ public class SecurityConfig {
                                 .requestMatchers("/api/auth/login").permitAll()
                                 .requestMatchers("/api/auth/logout").permitAll()
                                 .requestMatchers("api/orders/**").permitAll()
+                                .requestMatchers("/api/orders/{id}").permitAll()
+                                .requestMatchers("/api/orders/{status}").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults()); // Enable HTTP Basic authentication

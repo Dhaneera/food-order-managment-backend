@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -49,10 +50,15 @@ public class OrderController {
     }
 
     // Endpoint to retrieve an order by its ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Orders> getOrderById(@PathVariable Long id) {
+    @GetMapping("/id/{id}")
+    public ResponseEntity<Orders> getOrderById(@PathVariable UUID id) {
         Optional<Orders> order = orderService.getOrderById(id);
         return order.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+    @GetMapping("/{status}")
+    public ResponseEntity<Page<Orders>> getOrdersByStatus(@PathVariable String status, Pageable pageable) {
+        Page<Orders> orders = orderService.getOrdersByStatus(status, pageable);
+        return ResponseEntity.ok(orders);
     }
 }
