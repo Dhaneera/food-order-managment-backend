@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -22,20 +23,23 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(order);
     }
 
-
-
     @Override
     public Page<Orders> getAllOrders(Pageable pageable) {
         return orderRepository.findAll(pageable);
     }
 
     @Override
-    public Optional<Orders> getOrderById(Long id) {
+    public Optional<Orders> getOrderById(UUID id) {
         return orderRepository.findById(id);
     }
 
-    private String generateUUID() {
-        return java.util.UUID.randomUUID().toString(); // Generates a String-based ID
+    @Override
+    public Page<Orders> getOrdersByStatus(String status, Pageable pageable) {
+        return orderRepository.findByStatus(status, pageable);
+    }
+
+    private UUID generateUUID() {
+        return java.util.UUID.randomUUID(); // Generates a String-based ID
     }
 
 }

@@ -9,7 +9,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3001") // Replace with your frontend URL
+                .allowedOrigins("http://localhost:3000") // Replace with your frontend URL
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowCredentials(true) // Allow cookies, if any
                 .maxAge(3600); // Max age of CORS options response

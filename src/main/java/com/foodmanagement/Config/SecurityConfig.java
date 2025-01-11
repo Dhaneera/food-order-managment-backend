@@ -37,18 +37,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors()
-                .and()
-                .csrf(csrf -> csrf.disable())
+                .cors().and().csrf(csrf -> csrf.disable())
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling.authenticationEntryPoint(jwtAuthEntryPoint))
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/auth/login").permitAll()
-                                .requestMatchers("/api/auth/logout").permitAll()
                                 .requestMatchers("api/orders/**").permitAll()
+//                                .requestMatchers("/api/orders/{id}").permitAll()
+//                                .requestMatchers("/api/orders/{status}").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults()); // Enable HTTP Basic authentication

@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -17,15 +18,11 @@ import java.time.LocalDateTime;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class OrdersDto {
     @Valid
-    private Long id;
+    private UUID id;
     private String name;
     private String status;
     private Double price;
     private String createdBy;
     private LocalDateTime createdAt;
     private LocalDateTime orderedAt;
-
-    private Long studentId;
-    private Long pirivenStudentId;
-    private Long staffId;
 }
