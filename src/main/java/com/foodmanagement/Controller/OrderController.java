@@ -1,7 +1,9 @@
 package com.foodmanagement.Controller;
 
+import com.foodmanagement.Entity.Meal;
 import com.foodmanagement.Entity.Orders;
 import com.foodmanagement.Service.OrderService;
+import com.foodmanagement.dto.OrdersDto;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +26,8 @@ public class OrderController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<Orders> placeOrder(@RequestBody Orders order) {
-        Orders createdOrder = orderService.placeOrder(order);
+    public ResponseEntity<Meal> placeOrder(@RequestBody OrdersDto order) {
+        Meal createdOrder = orderService.placeOrder(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
     }
 

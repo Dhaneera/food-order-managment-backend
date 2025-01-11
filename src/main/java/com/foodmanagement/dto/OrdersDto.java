@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.UUID;
 
 @Data
@@ -25,4 +26,5 @@ public class OrdersDto {
     private String createdBy;
     private LocalDateTime createdAt;
     private LocalDateTime orderedAt;
+    private HashMap<String,MealDto> meals;
 }
