@@ -44,9 +44,7 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("api/orders/**").permitAll()
-//                                .requestMatchers("/api/orders/{id}").permitAll()
-//                                .requestMatchers("/api/orders/{status}").permitAll()
+                                .requestMatchers("/api/auth/register").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults()); // Enable HTTP Basic authentication
