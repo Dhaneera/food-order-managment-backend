@@ -13,7 +13,7 @@ import java.util.UUID;
 public class Orders {
     @Id
     @Column(name = "ordersId")
-    private UUID Id;
+    private UUID id;
     private String name;
     private String status;
     private Double price;
