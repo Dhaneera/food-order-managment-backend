@@ -46,7 +46,7 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Orders>> getAllOrders(Pageable pageable) {
+    public ResponseEntity<Page<Orders>>getAllOrders(Pageable pageable) {
         Page<Orders> orders = orderService.getAllOrders(pageable);
         return ResponseEntity.ok(orders);
     }
