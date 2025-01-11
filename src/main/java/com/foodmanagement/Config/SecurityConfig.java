@@ -43,13 +43,15 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/auth/register").permitAll()
+                                .requestMatchers("/api/auth/**").permitAll() // Allow all endpoints under /api/auth/
+                                .requestMatchers("/api/auth/register").permitAll() // Allow /register without JWT
+                                .requestMatchers("/api/orders/**").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .httpBasic(withDefaults()); // Enable HTTP Basic authentication
+                .httpBasic(withDefaults()); // Enable HTTP Basic authentication if needed
 
-        http.addFilterBefore(jwtAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class);
+        // Add JWT filter but exclude /register route
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

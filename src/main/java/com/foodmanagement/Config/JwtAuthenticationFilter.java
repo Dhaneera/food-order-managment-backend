@@ -28,6 +28,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String path = request.getRequestURI();
+        if (path.equals("/api/auth/register")) {
+            // Skip JWT filter logic for the register endpoint
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authHeader = request.getHeader("Authorization");
         String token = getJwtFromRequest(request);
 
@@ -43,10 +50,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String refreshToken = tokenGenerator.generateRefreshToken(authenticationToken);
             int refreshTokenExpirationInSeconds = (int) (SecurityConstance.JWT_REFRESH_EXPIRATION / 1000);
 
-
             String cookieName = "RefreshToken";
             String cookieValue = refreshToken;
-            String path = "/";
             boolean httpOnly = true;
             boolean secure = true;
             int maxAgeInSeconds = (int) (SecurityConstance.JWT_REFRESH_EXPIRATION / 1000);
