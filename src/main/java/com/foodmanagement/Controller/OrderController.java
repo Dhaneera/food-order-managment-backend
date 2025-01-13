@@ -64,4 +64,9 @@ public class OrderController {
         Page<Orders> orders = orderService.getOrdersByStatus(status, pageable);
         return ResponseEntity.ok(orders);
     }
+    @GetMapping("/createdBy/{createdBy}")
+    public ResponseEntity<Page<Orders>> getOrdersCreatedBy(@PathVariable String createdBy, Pageable pageable) {
+        Page<Orders> orders = orderService.getOrdersCreatedBy(createdBy, pageable);
+        return ResponseEntity.ok(orders);
+    }
 }

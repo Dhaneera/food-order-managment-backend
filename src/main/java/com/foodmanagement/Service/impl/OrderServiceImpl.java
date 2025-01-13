@@ -8,15 +8,15 @@ import com.foodmanagement.Service.OrderService;
 import com.foodmanagement.dto.MealDto;
 import com.foodmanagement.dto.OrdersDto;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.query.Order;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+
+import static org.springframework.data.jpa.domain.AbstractAuditable_.createdBy;
 
 @Service
 @RequiredArgsConstructor
@@ -83,5 +83,11 @@ public class OrderServiceImpl implements OrderService {
     private UUID generateUUID() {
         return java.util.UUID.randomUUID(); // Generates a String-based ID
     }
+
+    @Override
+    public Page<Orders>getOrdersCreatedBy(String CreatedBy, Pageable pageable){
+        return orderRepository.findByCreatedBy(CreatedBy,pageable);
+    }
+
 
 }

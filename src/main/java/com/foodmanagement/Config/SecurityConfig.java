@@ -47,6 +47,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/auth/register").permitAll() // Allow /register without JWT
                                 .requestMatchers("/api/auth/login").permitAll() // Allow /register without JWT
                                 .requestMatchers("/api/orders/**").permitAll()
+                                .requestMatchers("/api/orders/createdBy/{createdBy}").permitAll()
                                 .requestMatchers("/api/users/**").permitAll()
                                 .anyRequest().authenticated()
                 )

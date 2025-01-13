@@ -14,4 +14,6 @@ public interface OrderService {
     Page<Orders>getAllOrders(Pageable pageable);
     Optional<Orders> getOrderById(UUID id);
     Page<Orders> getOrdersByStatus(String status, Pageable pageable);
+     Page<Orders>getOrdersCreatedBy(String CreatedBy, Pageable pageable);
+
 }
