@@ -45,6 +45,7 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/api/auth/**").permitAll() // Allow all endpoints under /api/auth/
                                 .requestMatchers("/api/auth/register").permitAll() // Allow /register without JWT
+                                .requestMatchers("/api/auth/login").permitAll() // Allow /register without JWT
                                 .requestMatchers("/api/orders/**").permitAll()
                                 .requestMatchers("/api/users/**").permitAll()
                                 .anyRequest().authenticated()
