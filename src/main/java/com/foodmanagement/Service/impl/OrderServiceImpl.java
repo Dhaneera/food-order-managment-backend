@@ -8,15 +8,17 @@ import com.foodmanagement.Service.OrderService;
 import com.foodmanagement.dto.MealDto;
 import com.foodmanagement.dto.OrdersDto;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.query.Order;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static org.springframework.data.jpa.domain.AbstractAuditable_.createdBy;
+import static com.foodmanagement.util.RandomIdGenerator.createOrderId;
 
 @Service
 @RequiredArgsConstructor
@@ -25,13 +27,18 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final MealRepository mealRepository;
 
+
     @Override
     public Meal placeOrder(OrdersDto order) {
-        final UUID id=generateUUID();
+
+        Map<String,String> mapOfIds = createOrderId();
+        order.setId(mapOfIds.get("orderId"));
+
 
         Orders orders = new Orders();
         Orders savedOrder= null;
-        orders.setId(id);
+        orders.setId(order.getId());
+        System.out.println(orders);
         orders.setName(order.getName());
         orders.setPrice(order.getPrice());
         orders.setOrderedAt(order.getOrderedAt());
@@ -49,9 +56,15 @@ public class OrderServiceImpl implements OrderService {
                 HashMap<String, MealDto> meals = order.getMeals();
                 meals.forEach((key, value) -> {
                     Meal meal = new Meal();
-                    meal.setId(0);
+                    if(key.equalsIgnoreCase("breakfast")) {
+                        meal.setId(mapOfIds.get("mealBreakfast") + value.getCount());
+                    } else if (key.equalsIgnoreCase("lunch")) {
+                        meal.setId(mapOfIds.get("mealLunch") + value.getCount());
+                    } else if (key.equalsIgnoreCase("dinner")) {
+                        meal.setId(mapOfIds.get("mealDinner") + value.getCount());
+                    }
                     meal.setType(key);
-                    meal.setOrderId(id);
+                    meal.setOrderId(orders.getId());
                     meal.setStatus(value.getStatus());
                     meal.setCount(value.getCount());
                     value.setId(0);
@@ -59,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
                 });
 
             }catch (DataAccessException exception){
-                orderRepository.deleteById(id);
+                orderRepository.deleteById(mapOfIds.get("orderId"));
             }
         }
         return null;
@@ -71,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Optional<Orders> getOrderById(UUID id) {
+    public Optional<Orders> getOrderById(String id) {
         return orderRepository.findById(id);
     }
 
@@ -80,14 +93,14 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findByStatus(status, pageable);
     }
 
-    private UUID generateUUID() {
-        return java.util.UUID.randomUUID(); // Generates a String-based ID
-    }
-
     @Override
     public Page<Orders>getOrdersCreatedBy(String CreatedBy, Pageable pageable){
         return orderRepository.findByCreatedBy(CreatedBy,pageable);
     }
 
 
+    private String generateMealId(String orderId, int count) {
+        String countFormatted = String.format("%03d", count);
+        return orderId + "BR" + countFormatted; // Concatenate Order ID, BR, and Count
+    }
 }

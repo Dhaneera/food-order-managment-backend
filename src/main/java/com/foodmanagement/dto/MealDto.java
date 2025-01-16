@@ -14,7 +14,7 @@ import java.util.UUID;
 public class MealDto {
     private int id;
     private int count;
-    private UUID orderId;
+    private String orderId;
     private String status;
     private String type;
 }

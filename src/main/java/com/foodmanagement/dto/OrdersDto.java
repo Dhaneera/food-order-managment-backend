@@ -19,7 +19,7 @@ import java.util.UUID;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class OrdersDto {
     @Valid
-    private UUID id;
+    private String id;
     private String name;
     private String status;
     private Double price;

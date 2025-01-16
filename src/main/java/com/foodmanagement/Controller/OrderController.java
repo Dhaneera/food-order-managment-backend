@@ -25,7 +25,6 @@ public class OrderController {
     private final OrderService orderService;
 
 
-
     @PostMapping("/create")
     public ResponseEntity<Meal> placeOrder(@RequestBody OrdersDto order) {
         Meal createdOrder = orderService.placeOrder(order);
@@ -54,7 +53,7 @@ public class OrderController {
 
     // Endpoint to retrieve an order by its ID
     @GetMapping("/id/{id}")
-    public ResponseEntity<Orders> getOrderById(@PathVariable UUID id) {
+    public ResponseEntity<Orders> getOrderById(@PathVariable String id) {
         Optional<Orders> order = orderService.getOrderById(id);
         return order.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());

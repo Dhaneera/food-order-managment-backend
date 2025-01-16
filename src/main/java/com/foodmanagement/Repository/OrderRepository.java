@@ -14,9 +14,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Orders,UUID> {
+public interface OrderRepository extends JpaRepository<Orders,String> {
     Page<Orders> findByStatus(String status, Pageable pageable);
-    Optional<Orders> findById(UUID id);
+    Optional<Orders> findById(String id);
     Page<Orders> findAll(Pageable pageable);
 
     @Query(nativeQuery = true, value = "SELECT orders_id, name, status, price, created_by, created_at, ordered_at FROM orders WHERE created_by = :created_by")

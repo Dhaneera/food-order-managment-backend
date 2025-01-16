@@ -21,11 +21,10 @@ import java.util.UUID;
 @Setter
 public class Meal {
     @Id
-    @Column(name = "ordersId")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Column(name = "mealId")
+    private String id;
     private int count;
-    private UUID orderId;
+    private String orderId;
     private String status;
     private String type;
 

@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface OrderService {
     Meal placeOrder(OrdersDto order);
     Page<Orders>getAllOrders(Pageable pageable);
-    Optional<Orders> getOrderById(UUID id);
+    Optional<Orders> getOrderById(String id);
     Page<Orders> getOrdersByStatus(String status, Pageable pageable);
      Page<Orders>getOrdersCreatedBy(String CreatedBy, Pageable pageable);
 

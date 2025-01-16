@@ -41,6 +41,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "roleId",referencedColumnName = "roleId"))
     private List<Role>roles= new ArrayList<>();
 
-
-
+    @OneToOne(mappedBy = "user")
+    private ImageStore imageStore;
 }
