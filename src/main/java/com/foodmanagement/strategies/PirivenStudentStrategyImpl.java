@@ -7,6 +7,8 @@ import com.foodmanagement.Repository.UsersRepository;
 import com.foodmanagement.dto.CommonResponse;
 import com.foodmanagement.dto.RegisterDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
@@ -62,7 +64,7 @@ public class PirivenStudentStrategyImpl implements UserStrategies{
     }
 
     @Override
-    public void getAllUsers() {
-
+    public Page<User> getAllUsers(String status, Pageable pageable) { // status is the dto LMAO
+       return usersRepository.findAllByStatusAndRole(status,"ROLE_PIRIVEN_STUDENT",pageable);
     }
 }

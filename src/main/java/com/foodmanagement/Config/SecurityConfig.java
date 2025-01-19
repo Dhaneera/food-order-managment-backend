@@ -49,6 +49,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/orders/**").permitAll()
                                 .requestMatchers("/api/orders/createdBy/{createdBy}").permitAll()
                                 .requestMatchers("/api/users/**").permitAll()
+                                .requestMatchers("/api/users/type{type}").permitAll()
                                 .requestMatchers("/api/images/**").permitAll()
                                 .requestMatchers("/api//api/images/upload").permitAll()
                                 .requestMatchers("/api/images//{id}").permitAll()

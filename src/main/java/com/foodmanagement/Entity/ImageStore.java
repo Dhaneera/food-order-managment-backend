@@ -6,9 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Blob;
-
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,6 +26,5 @@ public class ImageStore {
     @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name ="userId")
     private User user;
-
 
 }

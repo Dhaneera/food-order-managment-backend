@@ -6,8 +6,9 @@ import com.foodmanagement.Repository.RoleRepository;
 import com.foodmanagement.Repository.UsersRepository;
 import com.foodmanagement.dto.CommonResponse;
 import com.foodmanagement.dto.RegisterDto;
-import com.foodmanagement.util.DateTimeUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
@@ -61,7 +62,7 @@ public class StudentStrategyImpl implements UserStrategies {
     }
 
     @Override
-    public void getAllUsers() {
-        System.out.println("All students retrieved");
+    public Page<User> getAllUsers(String status, Pageable pageable) {
+        return usersRepository.findAllByStatusAndRole(status,"ROLE_STUDENT",pageable);
     }
 }

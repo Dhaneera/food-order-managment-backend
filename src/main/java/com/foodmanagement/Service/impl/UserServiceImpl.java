@@ -6,28 +6,33 @@ import com.foodmanagement.Entity.User;
 import com.foodmanagement.Repository.RoleRepository;
 import com.foodmanagement.Repository.UsersRepository;
 import com.foodmanagement.Service.UsersService;
+import com.foodmanagement.dto.GetUserByStatusDto;
 import com.foodmanagement.dto.UsersDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.foodmanagement.strategies.UserStrategies;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UsersService {
 
-    @Autowired
-    private UsersRepository userRepository;
+    private final UsersRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
+    private final Map<String, UserStrategies> userStrategiesHashMap;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private RoleRepository roleRepository;
+    public UserServiceImpl(UsersRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, Map<String, UserStrategies> userStrategiesHashMap) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
+        this.userStrategiesHashMap = userStrategiesHashMap;
+    }
 
     @Override
     public User addUser(UsersDto userDto) {
@@ -85,6 +90,17 @@ public class UserServiceImpl implements UsersService {
                         .build())
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Page<User> getUserByUserType(GetUserByStatusDto dto, Pageable pageable) {
+        if(userStrategiesHashMap.containsKey(dto.getType())) {
+            UserStrategies userStrategies = userStrategiesHashMap.get(dto.getType());
+            return userStrategies.getAllUsers(dto.getStatus(), pageable);
+        }
+        throw new RuntimeException("User type not found");
+    }
+
+
 
 
 }
