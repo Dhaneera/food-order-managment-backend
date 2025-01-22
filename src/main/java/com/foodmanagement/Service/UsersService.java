@@ -8,14 +8,12 @@ import com.foodmanagement.dto.UsersDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public interface UsersService {
 
     User addUser(UsersDto userDto);
     User updateUser(Long id, UsersDto userDto);
     boolean deleteUser(Long id);
-    List<UsersDto> getAllUsers();
+    Page<User> getAllUsers(Pageable page);
 
     Page<User> getUserByUserType(GetUserByStatusDto dto, Pageable pageable);
 }

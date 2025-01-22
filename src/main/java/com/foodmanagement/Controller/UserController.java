@@ -32,7 +32,7 @@ public class UserController {
     @GetMapping("/type")
     Page getUserByUserType(@RequestBody GetUserByStatusDto getUserByStatusDto, Pageable pageable) {
         Page user=userService.getUserByUserType(getUserByStatusDto, pageable);
-        log.info("dhfidhfidhfihdifhidhfidhfihdifhdifhi"+user.toString());
+        log.info("user : "+user.toString());
         return user;
     }
     @PutMapping("/update/{id}")
@@ -42,9 +42,10 @@ public class UserController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<UsersDto>> getAllUsers() {
-        List<UsersDto> users = userService.getAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    public Page<User> getAllUsers(Pageable page) {
+        Page users= userService.getAllUsers(page);
+        log.info("users : "+users.toString());
+        return users;
     }
 
     @DeleteMapping("/delete/{id}")

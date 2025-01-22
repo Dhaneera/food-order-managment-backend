@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UsersService {
@@ -78,17 +77,8 @@ public class UserServiceImpl implements UsersService {
     }
 
     @Override
-    public List<UsersDto> getAllUsers() {
-        List<User> users = (List<User>) userRepository.findAll();
-        return users.stream()
-                .map(user -> UsersDto.builder()
-                        .id(user.getId())
-                        .username(user.getUsername())
-                        .roles(user.getRoles().stream()
-                                .map(role -> roleRepository.findById(role.getId()).orElseThrow(() -> new RuntimeException("Role not found")).getName())
-                                .collect(Collectors.toList()))
-                        .build())
-                .collect(Collectors.toList());
+    public Page<User> getAllUsers(Pageable page) {
+         return userRepository.findAll(page);
     }
 
     @Override

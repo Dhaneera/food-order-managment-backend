@@ -16,9 +16,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UsersRepository extends CrudRepository<User,Long> {
+public interface UsersRepository extends JpaRepository<User,Long> {
     Optional<User>findByUsername(String username);
     Boolean existsByUsername(String username);
+    Page<User> findAll(Pageable pageable);
     @Query("SELECT u FROM User u JOIN u.roles r WHERE u.status = :status AND r.name = :roleName")
     Page<User> findAllByStatusAndRole(@Param("status") String status,
                                       @Param("roleName") String roleName,
