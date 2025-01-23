@@ -9,14 +9,17 @@ import com.foodmanagement.Service.UsersService;
 import com.foodmanagement.dto.GetUserByStatusDto;
 import com.foodmanagement.dto.UsersDto;
 import com.foodmanagement.strategies.UserStrategies;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UsersService {
 
@@ -90,7 +93,30 @@ public class UserServiceImpl implements UsersService {
         throw new RuntimeException("User type not found");
     }
 
+    @Override
+    public Page<User> searchUsersByUsername(String username, Pageable pageable) {
+       return userRepository.findByUsernameContainingIgnoreCaseAndRoleNot(username,"ROLE_STAFF", pageable);
+    }
 
+    @Override
+    public boolean updateStatus(Long id) {
+        User user=getUserByName(id);
+        if(ObjectUtils.isEmpty(user)){
+            return false;
+        }else{
+            int b=userRepository.changeStatus(id,"ACTIVE");
+            log.info(b>0?"updated":"not updated");
+            return true;
+        }
+    }
 
+    @Override
+    public Page getAllStudents(Pageable pageable) {
+        return userRepository.findAllByStatus("ROLE_PIRIVEN_STUDENT","ROLE_STUDENT",pageable);
+    }
 
+    private User getUserByName(Long id){
+        Optional<User> user= userRepository.findById(id);
+        return user.orElseGet(User::new);
+    }
 }

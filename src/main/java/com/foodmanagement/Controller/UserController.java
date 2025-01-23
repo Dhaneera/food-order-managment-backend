@@ -9,11 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -29,7 +28,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @GetMapping("/type")
+    @PostMapping("/type")
     Page getUserByUserType(@RequestBody GetUserByStatusDto getUserByStatusDto, Pageable pageable) {
         Page user=userService.getUserByUserType(getUserByStatusDto, pageable);
         log.info("user : "+user.toString());
@@ -40,12 +39,21 @@ public class UserController {
         User user = userService.updateUser(id, userDto);
         return ResponseEntity.ok(user);
     }
+    @PutMapping("status/change/{id}")
+    public boolean updateUserStatus(@PathVariable Long id){
+       return userService.updateStatus(id);
+    }
 
     @GetMapping("/getAll")
     public Page<User> getAllUsers(Pageable page) {
         Page users= userService.getAllUsers(page);
         log.info("users : "+users.toString());
         return users;
+    }
+
+    @GetMapping("/getAll/students")
+    public Page<User> getAllStudents(Pageable pageable) {
+        return userService.getAllStudents(pageable);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -57,4 +65,10 @@ public class UserController {
             return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
         }
     }
+    @GetMapping("/serach")
+    public ResponseEntity<Page<User>> searchUsersByUsername(@RequestParam String username,Pageable pageable) {
+        Page<User> users = userService.searchUsersByUsername(username, pageable);
+        return ResponseEntity.ok(users);
+    }
+
 }

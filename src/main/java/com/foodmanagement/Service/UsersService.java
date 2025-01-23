@@ -16,5 +16,11 @@ public interface UsersService {
     Page<User> getAllUsers(Pageable page);
 
     Page<User> getUserByUserType(GetUserByStatusDto dto, Pageable pageable);
+
+    Page<User> searchUsersByUsername(String username, Pageable pageable);
+
+    boolean updateStatus(Long id);
+
+    Page getAllStudents(Pageable pageable);
 }
 
