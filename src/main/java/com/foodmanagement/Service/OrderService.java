@@ -6,6 +6,7 @@ import com.foodmanagement.dto.OrdersDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,5 +16,6 @@ public interface OrderService {
     Optional<Orders> getOrderById(String id);
     Page<Orders> getOrdersByStatus(String status, Pageable pageable);
      Page<Orders>getOrdersCreatedBy(String CreatedBy, Pageable pageable);
+     int getCountOrderByType(String orderAt , String type);
 
 }

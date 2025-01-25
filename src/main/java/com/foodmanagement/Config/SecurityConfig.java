@@ -54,6 +54,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api//api/images/upload").permitAll()
                                 .requestMatchers("/api/images//{id}").permitAll()
                                 .requestMatchers("/api/image/base64/{id}").permitAll()
+                                .requestMatchers("/meal/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults()); // Enable HTTP Basic authentication if needed

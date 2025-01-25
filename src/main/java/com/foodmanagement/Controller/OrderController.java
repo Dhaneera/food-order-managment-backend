@@ -68,4 +68,10 @@ public class OrderController {
         Page<Orders> orders = orderService.getOrdersCreatedBy(createdBy, pageable);
         return ResponseEntity.ok(orders);
     }
+    @GetMapping("/count/{orderAt}/{type}")
+    public ResponseEntity<Integer> getOrdersCount(@PathVariable String orderAt, @PathVariable String type){
+
+       int count =  orderService.getCountOrderByType(orderAt,type);
+       return ResponseEntity.ok(count);
+    }
 }

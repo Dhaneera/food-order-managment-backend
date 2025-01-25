@@ -21,5 +21,16 @@ public interface OrderRepository extends JpaRepository<Orders,String> {
 
     @Query(nativeQuery = true, value = "SELECT orders_id, name, status, price, created_by, created_at, ordered_at FROM orders WHERE created_by = :created_by")
     Page<Orders> findByCreatedBy(@Param("created_by") String createdBy, Pageable pageable);
-
+    @Query(value = """
+       SELECT COUNT(*) AS row_count
+       FROM meal m
+       JOIN orders o ON m.order_id = o.orders_id
+       WHERE DATE(o.ordered_at) = DATE(:orderedAt) AND m.type = :type
+      """, nativeQuery = true)
+    int findRowCountByTypeAndOrderedAt(
+            @Param("orderedAt") String orderedAt,
+            @Param("type") String type
+    );
 }
+
+

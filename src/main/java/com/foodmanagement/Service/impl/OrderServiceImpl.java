@@ -68,7 +68,9 @@ public class OrderServiceImpl implements OrderService {
                     meal.setStatus(value.getStatus());
                     meal.setCount(value.getCount());
                     value.setId(0);
-                    mealRepository.save(meal);
+                    if(meal.getCount()>0) {
+                        mealRepository.save(meal);
+                    }
                 });
 
             }catch (DataAccessException exception){
@@ -98,9 +100,16 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findByCreatedBy(CreatedBy,pageable);
     }
 
+    @Override
+    public int getCountOrderByType(String orderAt, String type) {
+        return orderRepository.findRowCountByTypeAndOrderedAt(orderAt, type);
+    }
+
 
     private String generateMealId(String orderId, int count) {
         String countFormatted = String.format("%03d", count);
         return orderId + "BR" + countFormatted; // Concatenate Order ID, BR, and Count
     }
+
+
 }
