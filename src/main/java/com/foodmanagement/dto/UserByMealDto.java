@@ -14,5 +14,5 @@ public class UserByMealDto {
     private String name;
     private String contactNo;
     private String quantity;
-    private String image;
+    private long image;
 }

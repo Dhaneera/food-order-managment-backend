@@ -6,6 +6,7 @@ import com.foodmanagement.Entity.User;
 import com.foodmanagement.Repository.MealRepository;
 import com.foodmanagement.Repository.OrderRepository;
 import com.foodmanagement.Repository.UsersRepository;
+import com.foodmanagement.Service.impl.ImageStoreServiceImpl;
 import com.foodmanagement.dto.UserByMealDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ public class MealController {
     private final MealRepository mealRepository;
     private final OrderRepository orderRepository;
     private final UsersRepository usersRepository;
+    private final ImageStoreServiceImpl imageStoreController;
 
     @GetMapping("/{id}")
     public ResponseEntity getMealById(@PathVariable String id){
@@ -40,7 +42,8 @@ public class MealController {
                             .mealId(byId.get().getId())
                             .name(user.get().getName())
                             .contactNo(user.get().getUsername())
-                            .quantity(String.valueOf(byId.get().getCount())).build()
+                            .quantity(String.valueOf(byId.get().getCount()))
+                            .image(user.get().getId()).build()
                             ,HttpStatus.OK);
                 }
 
