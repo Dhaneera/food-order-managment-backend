@@ -11,11 +11,13 @@ import com.foodmanagement.dto.UserByMealDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -33,7 +35,7 @@ public class MealController {
         Optional<Orders> order;
         Optional<User> user;
         Optional<Meal> byId = mealRepository.findById(id);
-        if(byId.isPresent()) {
+        if(byId.isPresent() && Objects.equals(byId.get().getStatus(), "Pending")) {
             order=orderRepository.findById(byId.get().getOrderId());
             if(order.isPresent()) {
                 user=usersRepository.findByUsername(order.get().getCreatedBy());
@@ -49,8 +51,10 @@ public class MealController {
 
             }
             return ResponseEntity.ok(byId.get());
+        }else if(ObjectUtils.nullSafeEquals(byId.get().getStatus(), "Complete")) {
+            return new ResponseEntity<>("Meal Already given for the ID "+id,HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>("Meal not found for the id"+id, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Meal not found for the ID "+id, HttpStatus.NOT_FOUND);
     }
 
 
