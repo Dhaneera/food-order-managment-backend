@@ -31,6 +31,16 @@ public interface OrderRepository extends JpaRepository<Orders,String> {
             @Param("orderedAt") String orderedAt,
             @Param("type") String type
     );
+    @Query(value = """
+       SELECT COUNT(*) AS row_count
+       FROM meal m
+       JOIN orders o ON m.order_id = o.orders_id
+       WHERE DATE(o.ordered_at) = DATE(:orderedAt) AND m.type = :type AND m.status='Pending'
+      """, nativeQuery = true)
+    int findRowCountByTypeAndOrderedAtWhichIsPending(
+            @Param("orderedAt") String orderedAt,
+            @Param("type") String type
+    );
 }
 
 

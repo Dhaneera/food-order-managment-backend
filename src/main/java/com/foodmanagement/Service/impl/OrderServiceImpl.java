@@ -13,9 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.security.SecureRandom;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.foodmanagement.util.RandomIdGenerator.createOrderId;
@@ -29,10 +26,11 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public Meal placeOrder(OrdersDto order) {
+    public List<String> placeOrder(OrdersDto order) {
 
         Map<String,String> mapOfIds = createOrderId();
         order.setId(mapOfIds.get("orderId"));
+        List<String> listOfStrings = new ArrayList<>();
 
 
         Orders orders = new Orders();
@@ -70,6 +68,7 @@ public class OrderServiceImpl implements OrderService {
                     value.setId(0);
                     if(meal.getCount()>0) {
                         mealRepository.save(meal);
+                        listOfStrings.add(meal.getId());
                     }
                 });
 
@@ -77,7 +76,9 @@ public class OrderServiceImpl implements OrderService {
                 orderRepository.deleteById(mapOfIds.get("orderId"));
             }
         }
-        return null;
+
+
+        return listOfStrings ;
     }
 
     @Override
@@ -101,8 +102,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int getCountOrderByType(String orderAt, String type) {
-        return orderRepository.findRowCountByTypeAndOrderedAt(orderAt, type);
+    public HashMap<String, Integer> getCountOrderByType(String orderAt, String type) {
+        int effectedRowCount=orderRepository.findRowCountByTypeAndOrderedAt(orderAt, type);
+        int pendingRowCount=orderRepository.findRowCountByTypeAndOrderedAtWhichIsPending(orderAt,type);
+        HashMap<String,Integer> map = new HashMap<>();
+        map.put("total",effectedRowCount);
+        map.put("pending",pendingRowCount);
+        return map;
     }
 
 

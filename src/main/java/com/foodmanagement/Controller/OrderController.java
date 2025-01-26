@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,9 +28,9 @@ public class OrderController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<Meal> placeOrder(@RequestBody OrdersDto order) {
-        Meal createdOrder = orderService.placeOrder(order);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
+    public ResponseEntity placeOrder(@RequestBody OrdersDto order) {
+        List<String> list = orderService.placeOrder(order);
+        return ResponseEntity.status(HttpStatus.CREATED).body(list);
     }
 
     @GetMapping("/cookies")
@@ -69,9 +71,9 @@ public class OrderController {
         return ResponseEntity.ok(orders);
     }
     @GetMapping("/count/{orderAt}/{type}")
-    public ResponseEntity<Integer> getOrdersCount(@PathVariable String orderAt, @PathVariable String type){
+    public ResponseEntity<HashMap<String,Integer>> getOrdersCount(@PathVariable String orderAt, @PathVariable String type){
 
-       int count =  orderService.getCountOrderByType(orderAt,type);
-       return ResponseEntity.ok(count);
+        HashMap<String,Integer> map =orderService.getCountOrderByType(orderAt,type);
+        return ResponseEntity.ok(map);
     }
 }

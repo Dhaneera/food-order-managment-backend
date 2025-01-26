@@ -12,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -51,10 +48,25 @@ public class MealController {
 
             }
             return ResponseEntity.ok(byId.get());
-        }else if(ObjectUtils.nullSafeEquals(byId.get().getStatus(), "Complete")) {
+
+        }
+        if(byId.isEmpty()){
+            return new ResponseEntity<>("Meal not found for the ID "+id, HttpStatus.NOT_FOUND);
+        }
+        else if(ObjectUtils.nullSafeEquals(byId.get().getStatus(), "Complete")) {
             return new ResponseEntity<>("Meal Already given for the ID "+id,HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>("Meal not found for the ID "+id, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("SOMETHING WENT WRONG... "+id, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @PostMapping("/status/{id}")
+    public ResponseEntity updateStatusMeal(@PathVariable String id){
+        int effectedRowCount=mealRepository.updateMealStatusById(id,"Complete");
+        if(effectedRowCount>0){
+            return ResponseEntity.ok("Meal Successfully updated");
+        }else {
+            return ResponseEntity.ok("Something went wrong try again");
+        }
     }
 
 
