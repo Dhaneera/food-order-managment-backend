@@ -24,5 +24,8 @@ public interface UsersService {
     Page getAllStudents(Pageable pageable);
 
     Page<User> getAllEmployees(Pageable pageable);
+
+    Page<User> searchEmployeesByUsername(String username, Pageable pageable);
+
 }
 

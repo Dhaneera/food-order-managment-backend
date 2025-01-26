@@ -29,11 +29,14 @@ public interface UsersRepository extends JpaRepository<User,Long> {
     @Query("SELECT u FROM User u JOIN u.roles r WHERE LOWER(u.username) LIKE LOWER(CONCAT('%', :username, '%')) AND r.name != :roleName")
     Page<User> findByUsernameContainingIgnoreCaseAndRoleNot(@Param("username") String username, @Param("roleName") String roleName, Pageable pageable);
 
+    @Query("SELECT u FROM User u JOIN u.roles r WHERE LOWER(u.username) LIKE LOWER(CONCAT('%', :username, '%')) AND r.name != :roleName AND r.name!= :roleName2")
+    Page<User> findByUsernameContainingIgnoreCaseAndRoleEmployee(@Param("username") String username, @Param("roleName") String roleName,@Param("roleName2")String roleName2 , Pageable pageable);
+
     @Modifying
     @Transactional
     @Query("UPDATE User u SET u.status = :status where u.id=:id")
     int changeStatus(@Param("id") Long id,
-                         @Param("status") String status);
+                     @Param("status") String status);
 
     @Query("SELECT u FROM User u JOIN u.roles r WHERE r.name = :roleName")
     Page<User> findAllByRole(@Param("roleName") String roleName,Pageable pageable);

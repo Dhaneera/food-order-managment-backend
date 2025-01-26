@@ -75,6 +75,11 @@ public class UserController {
         Page<User> users = userService.searchUsersByUsername(username, pageable);
         return ResponseEntity.ok(users);
     }
+    @GetMapping("/serachEmployees")
+    public ResponseEntity<Page<User>> searchEmployeesByUsername(@RequestParam String username,Pageable pageable) {
+        Page<User> users = userService.searchEmployeesByUsername(username, pageable);
+        return ResponseEntity.ok(users);
+    }
 
 
 }
