@@ -35,6 +35,9 @@ public interface UsersRepository extends JpaRepository<User,Long> {
     int changeStatus(@Param("id") Long id,
                          @Param("status") String status);
 
+    @Query("SELECT u FROM User u JOIN u.roles r WHERE r.name = :roleName")
+    Page<User> findAllByRole(@Param("roleName") String roleName,Pageable pageable);
+
     @Query("SELECT u FROM User u JOIN u.roles r WHERE r.name IN( :roleName,:roleName2)")
     Page<User> findAllByStatus(@Param("roleName") String role1,@Param("roleName2") String role2,Pageable pageable);
 }

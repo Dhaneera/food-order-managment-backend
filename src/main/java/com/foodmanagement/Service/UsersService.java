@@ -22,5 +22,7 @@ public interface UsersService {
     boolean updateStatus(Long id);
 
     Page getAllStudents(Pageable pageable);
+
+    Page<User> getAllEmployees(Pageable pageable);
 }
 

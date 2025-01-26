@@ -115,6 +115,11 @@ public class UserServiceImpl implements UsersService {
         return userRepository.findAllByStatus("ROLE_PIRIVEN_STUDENT","ROLE_STUDENT",pageable);
     }
 
+    @Override
+    public Page<User> getAllEmployees(Pageable pageable) {
+        return userRepository.findAllByRole("ROLE_STAFF",pageable);
+    }
+
     private User getUserByName(Long id){
         Optional<User> user= userRepository.findById(id);
         return user.orElseGet(User::new);

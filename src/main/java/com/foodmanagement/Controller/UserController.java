@@ -56,6 +56,11 @@ public class UserController {
         return userService.getAllStudents(pageable);
     }
 
+    @GetMapping("/getAllEmployees")
+    public Page<User> getAllEmployees(Pageable pageable) {
+        return userService.getAllEmployees(pageable);
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         try {
