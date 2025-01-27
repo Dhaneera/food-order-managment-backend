@@ -1,18 +1,26 @@
-# Use the official Amazon Corretto 21 JDK image as a base
-FROM openjdk:17
+# Use an official Maven image to build the project
+FROM maven:3.8.8-eclipse-temurin-17 AS builder
 
-# Set the working directory in the container
+# Set working directory
 WORKDIR /app
 
-# Copy the JAR file from the target directory to the container
-COPY target/demo-0.0.1-SNAPSHOT.jar app.jar
+# Copy the project files
+COPY . .
 
+# Build the project and skip tests
+RUN mvn clean install -DskipTests
 
+# Use a lightweight JDK image to run the app (non-Alpine version)
+FROM eclipse-temurin:17-jdk
 
-# Expose the application's port (change if necessary)
+# Set working directory
+WORKDIR /app
+
+# Copy the JAR file from the build stage
+COPY --from=builder /app/target/*.jar app.jar
+
+# Expose the application port
 EXPOSE 8080
 
-# Command to run the JAR file
-
-ENTRYPOINT [    "java", "-jar", "app.jar"]
-
+# Run the application
+CMD ["java", "-jar", "app.jar"]
