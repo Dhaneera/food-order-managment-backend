@@ -3,15 +3,29 @@ package com.foodmanagement.Service;
 
 
 import com.foodmanagement.Entity.User;
+import com.foodmanagement.dto.GetUserByStatusDto;
 import com.foodmanagement.dto.UsersDto;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface UsersService {
 
-     User addUser(UsersDto userDto);
+    User addUser(UsersDto userDto);
     User updateUser(Long id, UsersDto userDto);
-    void deleteUser(Long id);
-    List<UsersDto> getAllUsers();
+    boolean deleteUser(Long id);
+    Page<User> getAllUsers(Pageable page);
+
+    Page<User> getUserByUserType(GetUserByStatusDto dto, Pageable pageable);
+
+    Page<User> searchUsersByUsername(String username, Pageable pageable);
+
+    boolean updateStatus(Long id);
+
+    Page getAllStudents(Pageable pageable);
+
+    Page<User> getAllEmployees(Pageable pageable);
+
+    Page<User> searchEmployeesByUsername(String username, Pageable pageable);
 
 }
+

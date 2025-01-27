@@ -26,6 +26,7 @@ public class SecurityConfig {
     private final CustomUserDetailServiceImpl customUserDetailServiceImpl;
 
 
+
     @Autowired
     public SecurityConfig(CustomUserDetailServiceImpl customUserDetailServiceImpl, JwtAuthEntryPoint jwtAuthEntryPoint) {
         this.customUserDetailServiceImpl = customUserDetailServiceImpl;
@@ -36,22 +37,32 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                .cors().disable().csrf(csrf -> csrf.disable())
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling.authenticationEntryPoint(jwtAuthEntryPoint))
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/auth/login").permitAll()
+                                .requestMatchers("/api/auth/**").permitAll() // Allow all endpoints under /api/auth/
+                                .requestMatchers("/api/auth/register").permitAll() // Allow /register without JWT
+                                .requestMatchers("/api/auth/login").permitAll() // Allow /register without JWT
+                                .requestMatchers("/api/orders/**").permitAll()
+                                .requestMatchers("/api/orders/createdBy/{createdBy}").permitAll()
+                                .requestMatchers("/api/users/**").permitAll()
+                                .requestMatchers("/api/users/type{type}").permitAll()
+                                .requestMatchers("/api/images/**").permitAll()
+                                .requestMatchers("/api//api/images/upload").permitAll()
+                                .requestMatchers("/api/images//{id}").permitAll()
+                                .requestMatchers("/api/image/base64/{id}").permitAll()
+                                .requestMatchers("/meal/**").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .httpBasic(withDefaults()); // Enable HTTP Basic authentication
+                .httpBasic(withDefaults()); // Enable HTTP Basic authentication if needed
 
-        http.addFilterBefore(jwtAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class);
+        // Add JWT filter but exclude /register route
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
 
     @Bean
     public AuthenticationManager authenticationManager(
