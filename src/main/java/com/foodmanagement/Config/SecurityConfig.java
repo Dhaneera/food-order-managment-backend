@@ -24,20 +24,22 @@ public class SecurityConfig {
 
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
     private final CustomUserDetailServiceImpl customUserDetailServiceImpl;
+    private final CorsConfig corsConfigurationSource;
 
 
 
     @Autowired
-    public SecurityConfig(CustomUserDetailServiceImpl customUserDetailServiceImpl, JwtAuthEntryPoint jwtAuthEntryPoint) {
+    public SecurityConfig(CustomUserDetailServiceImpl customUserDetailServiceImpl, JwtAuthEntryPoint jwtAuthEntryPoint, CorsConfig corsConfigurationSource) {
         this.customUserDetailServiceImpl = customUserDetailServiceImpl;
         this.jwtAuthEntryPoint=jwtAuthEntryPoint;
+        this.corsConfigurationSource = corsConfigurationSource;
     }
 
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors().disable().csrf(csrf -> csrf.disable())
+                .cors().configurationSource(corsConfigurationSource.corsConfigurationSource()).and().csrf(csrf -> csrf.disable())
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling.authenticationEntryPoint(jwtAuthEntryPoint))
                 .sessionManagement(sessionManagement ->
