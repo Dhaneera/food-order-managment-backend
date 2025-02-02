@@ -58,7 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             Cookie newRefreshTokenCookie = new Cookie(cookieName, cookieValue);
             newRefreshTokenCookie.setHttpOnly(httpOnly);
-            newRefreshTokenCookie.setSecure(secure); // Set secure flag to true
+            newRefreshTokenCookie.setSecure(secure);
             newRefreshTokenCookie.setPath(path);
             newRefreshTokenCookie.setMaxAge(maxAgeInSeconds);
             response.setHeader("Set-Cookie", String.format("%s=%s; Path=%s; Max-Age=%d; HttpOnly; Secure", cookieName, cookieValue, path, refreshTokenExpirationInSeconds));

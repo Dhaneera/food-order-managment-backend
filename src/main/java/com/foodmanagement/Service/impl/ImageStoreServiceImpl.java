@@ -7,6 +7,7 @@ import com.foodmanagement.Service.ImageStoreService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -30,8 +31,14 @@ public class ImageStoreServiceImpl implements ImageStoreService {
         byte [] encodedString = Base64.getEncoder().encode(file.getBytes());
         image.setFileData(encodedString);
         image.setUser(user);
-        return imageStoreRepository.save(image);
+        Optional<ImageStore> imageStore=imageStoreRepository.findByUserId(id);
 
+        if(ObjectUtils.isEmpty(imageStore.get().getId())){
+            return imageStoreRepository.save(image);
+        }else {
+            imageStoreRepository.deleteByUserId(id);
+            return imageStoreRepository.save(image);
+        }
     }
 
     @Override
@@ -40,7 +47,7 @@ public class ImageStoreServiceImpl implements ImageStoreService {
     }
 
     public byte[] getImageBase64ById(Long id) {
-        Optional<ImageStore> imageOptional = imageStoreRepository.findById(id);
+        Optional<ImageStore> imageOptional = imageStoreRepository.findByUserId(id);
 
         if (imageOptional.isPresent()) {
             ImageStore image = imageOptional.get();
@@ -49,7 +56,7 @@ public class ImageStoreServiceImpl implements ImageStoreService {
             return Base64.getDecoder().decode(image.getFileData());
         }
 
-        throw new RuntimeException("Image not found with ID: " + id);
+        return null;
     }
 
 }
