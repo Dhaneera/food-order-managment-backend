@@ -15,6 +15,17 @@ public class AuthResponseDto {
     private List<String> roles;
     private Long userId;
     private Long roleId;
+    private String status;
+
+    public AuthResponseDto(String accessToken, String refreshToken, List<String> roles, Long userId, Long roleId,String status) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+        this.roles = roles;
+        this.userId = userId;
+        this.roleId = roleId;
+        this.status=status;
+
+    }
 
     public AuthResponseDto(String accessToken, String refreshToken, List<String> roles, Long userId, Long roleId) {
         this.accessToken = accessToken;
@@ -22,6 +33,5 @@ public class AuthResponseDto {
         this.roles = roles;
         this.userId = userId;
         this.roleId = roleId;
-
     }
 }

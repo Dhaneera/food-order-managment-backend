@@ -30,6 +30,9 @@ public class OrderController {
     @PostMapping("/create")
     public ResponseEntity placeOrder(@RequestBody OrdersDto order) {
         List<String> list = orderService.placeOrder(order);
+        if(list==null){
+            return ResponseEntity.status(HttpStatus.OK).body("Order could not be placed");
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(list);
     }
 

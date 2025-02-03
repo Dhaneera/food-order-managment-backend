@@ -12,6 +12,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.*;
 
@@ -27,7 +28,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<String> placeOrder(OrdersDto order) {
-
+        if(ObjectUtils.isEmpty(order.getCreatedBy())){
+            return null;
+        }
         Map<String,String> mapOfIds = createOrderId();
         order.setId(mapOfIds.get("orderId"));
         List<String> listOfStrings = new ArrayList<>();

@@ -90,7 +90,7 @@ public class AuthController {
         response.addCookie(refreshTokenCookie);
 
         // Return the response including userId, roleId, and tokens
-        return new ResponseEntity<>(new AuthResponseDto(accessToken, refreshToken, roles, user.getId(), roleId), HttpStatus.OK);
+        return new ResponseEntity<>(new AuthResponseDto(accessToken, refreshToken, roles, user.getId(),roleId,user.getStatus()), HttpStatus.OK);
     }
 
     @PostMapping("/logout")
