@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import static com.foodmanagement.util.RandomIdGenerator.createOrderId;
@@ -112,6 +113,12 @@ public class OrderServiceImpl implements OrderService {
         map.put("total",effectedRowCount);
         map.put("pending",pendingRowCount);
         return map;
+    }
+
+    @Override
+    public boolean changeOrderStatus(String localDate) {
+       orderRepository.changeOrderStatusByDate(localDate);
+       return true;
     }
 
 
