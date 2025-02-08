@@ -2,6 +2,7 @@ package com.foodmanagement.Service.impl;
 
 import com.foodmanagement.Service.AuthService;
 import com.foodmanagement.dto.CommonResponse;
+import com.foodmanagement.dto.EmployeeMoreInfoDto;
 import com.foodmanagement.dto.RegisterDto;
 import com.foodmanagement.dto.StudentMoreInfoDto;
 import com.foodmanagement.strategies.UserStrategies;
@@ -63,5 +64,11 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String changeProfilePicture(String username, String profilePicture) {
         return "";
+    }
+
+    @Override
+    public CommonResponse saveMoreInfoEmployee(EmployeeMoreInfoDto employeeMoreInfoDto) {
+        UserStrategies userStrategies=userStrategiesHashMap.get("staff");
+        return userStrategies.saveMoreDetailsEmp(employeeMoreInfoDto);
     }
 }

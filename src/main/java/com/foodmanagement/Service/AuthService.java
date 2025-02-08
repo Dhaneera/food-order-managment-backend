@@ -1,6 +1,7 @@
 package com.foodmanagement.Service;
 
 import com.foodmanagement.dto.CommonResponse;
+import com.foodmanagement.dto.EmployeeMoreInfoDto;
 import com.foodmanagement.dto.RegisterDto;
 import com.foodmanagement.dto.StudentMoreInfoDto;
 
@@ -16,4 +17,6 @@ public interface AuthService {
     public String changeRole(String username, String role);
     public String changeStatus(String username, String status);
     public String changeProfilePicture(String username, String profilePicture);
+
+    CommonResponse saveMoreInfoEmployee(EmployeeMoreInfoDto employeeMoreInfoDto);
 }

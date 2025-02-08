@@ -11,6 +11,7 @@ import com.foodmanagement.Service.impl.AuthServiceImpl;
 import com.foodmanagement.Service.impl.CustomUserDetailServiceImpl;
 import com.foodmanagement.dto.AuthResponseDto;
 import com.foodmanagement.dto.CommonResponse;
+import com.foodmanagement.dto.EmployeeMoreInfoDto;
 import com.foodmanagement.dto.LoginDto;
 import com.foodmanagement.dto.RegisterDto;
 import com.foodmanagement.dto.StudentMoreInfoDto;
@@ -139,6 +140,11 @@ public class AuthController {
     public ResponseEntity<CommonResponse<User>> saveMoreInfo(@RequestBody StudentMoreInfoDto studentMoreInfoDto){
         CommonResponse commonResponse=authService.saveMoreInfo(studentMoreInfoDto);
         return new ResponseEntity<CommonResponse<User>>(commonResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/save-internal")
+    public CommonResponse saveMoreInfoOfEmployees(@RequestBody EmployeeMoreInfoDto employeeMoreInfoDto){
+        return authService.saveMoreInfoEmployee(employeeMoreInfoDto);
     }
 
 }

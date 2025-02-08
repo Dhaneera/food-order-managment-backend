@@ -48,4 +48,7 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private StudentMoreInfo studentMoreInfo;
+
+    @OneToOne(mappedBy = "user")
+    private MoreEmpInfo moreEmpInfo;
 }

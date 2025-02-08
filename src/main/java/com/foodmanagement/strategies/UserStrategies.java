@@ -2,6 +2,7 @@ package com.foodmanagement.strategies;
 
 import com.foodmanagement.Entity.User;
 import com.foodmanagement.dto.CommonResponse;
+import com.foodmanagement.dto.EmployeeMoreInfoDto;
 import com.foodmanagement.dto.RegisterDto;
 import com.foodmanagement.dto.StudentMoreInfoDto;
 import org.springframework.data.domain.Page;
@@ -16,4 +17,6 @@ public interface UserStrategies {
     public void deleteUser();
     public void getUser();
     public Page<User> getAllUsers(String status, Pageable pageable);
+
+    CommonResponse saveMoreDetailsEmp(EmployeeMoreInfoDto employeeMoreInfoDto);
 }

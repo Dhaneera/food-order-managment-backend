@@ -7,6 +7,7 @@ import com.foodmanagement.Repository.RoleRepository;
 import com.foodmanagement.Repository.StudentMoreInfoRepository;
 import com.foodmanagement.Repository.UsersRepository;
 import com.foodmanagement.dto.CommonResponse;
+import com.foodmanagement.dto.EmployeeMoreInfoDto;
 import com.foodmanagement.dto.RegisterDto;
 import com.foodmanagement.dto.StudentMoreInfoDto;
 import lombok.RequiredArgsConstructor;
@@ -95,5 +96,10 @@ public class StudentStrategyImpl implements UserStrategies {
     @Override
     public Page<User> getAllUsers(String status, Pageable pageable) {
         return usersRepository.findAllByStatusAndRole(status,"ROLE_STUDENT",pageable);
+    }
+
+    @Override
+    public CommonResponse saveMoreDetailsEmp(EmployeeMoreInfoDto employeeMoreInfoDto) {
+        return null;
     }
 }
