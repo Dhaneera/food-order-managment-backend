@@ -59,6 +59,12 @@ public class MealController {
         return new ResponseEntity<>("SOMETHING WENT WRONG... "+id, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @GetMapping("/get/order/{id}")
+    public ResponseEntity getAllMealsByOrderId(@PathVariable String id){
+        return ResponseEntity.ok(mealRepository.findMealByOrderId(id));
+
+    }
+
     @PostMapping("/status/{id}")
     public ResponseEntity updateStatusMeal(@PathVariable String id){
         int effectedRowCount=mealRepository.updateMealStatusById(id,"Complete");

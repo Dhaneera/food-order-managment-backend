@@ -53,7 +53,8 @@ public class UserController {
 
     @GetMapping("/getAll/students")
     public Page<User> getAllStudents(Pageable pageable) {
-        return userService.getAllStudents(pageable);
+        Page <User> page= userService.getAllStudents(pageable);
+        return page;
     }
 
     @GetMapping("/getAllEmployees")

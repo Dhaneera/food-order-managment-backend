@@ -13,6 +13,7 @@ import com.foodmanagement.dto.AuthResponseDto;
 import com.foodmanagement.dto.CommonResponse;
 import com.foodmanagement.dto.LoginDto;
 import com.foodmanagement.dto.RegisterDto;
+import com.foodmanagement.dto.StudentMoreInfoDto;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -132,6 +133,12 @@ public class AuthController {
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @PostMapping("/save-more-info")
+    public ResponseEntity<CommonResponse<User>> saveMoreInfo(@RequestBody StudentMoreInfoDto studentMoreInfoDto){
+        CommonResponse commonResponse=authService.saveMoreInfo(studentMoreInfoDto);
+        return new ResponseEntity<CommonResponse<User>>(commonResponse, HttpStatus.OK);
     }
 
 }

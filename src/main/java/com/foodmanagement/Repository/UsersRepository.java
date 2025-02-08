@@ -42,6 +42,6 @@ public interface UsersRepository extends JpaRepository<User,Long> {
     Page<User> findAllByRole(@Param("roleName") String roleName,Pageable pageable);
 
     @Query("SELECT u FROM User u JOIN u.roles r WHERE r.name IN( :roleName,:roleName2)")
-    Page<User> findAllByStatus(@Param("roleName") String role1,@Param("roleName2") String role2,Pageable pageable);
+    Page<User> findAllBytatus(@Param("roleName") String role1,@Param("roleName2") String role2,Pageable pageable);
 }
 

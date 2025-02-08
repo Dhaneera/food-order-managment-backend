@@ -3,6 +3,7 @@ package com.foodmanagement.Service.impl;
 import com.foodmanagement.Service.AuthService;
 import com.foodmanagement.dto.CommonResponse;
 import com.foodmanagement.dto.RegisterDto;
+import com.foodmanagement.dto.StudentMoreInfoDto;
 import com.foodmanagement.strategies.UserStrategies;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,12 @@ public class AuthServiceImpl implements AuthService {
     public CommonResponse register(RegisterDto registerDto) {
         UserStrategies userStrategies=userStrategiesHashMap.get(registerDto.getRoleType().toLowerCase());
         return userStrategies.saveUser(registerDto);
+    }
+
+    @Override
+    public CommonResponse saveMoreInfo(StudentMoreInfoDto studentMoreInfoDto){
+        UserStrategies userStrategies=userStrategiesHashMap.get("student");
+        return userStrategies.saveMoreDetails(studentMoreInfoDto);
     }
 
     @Override

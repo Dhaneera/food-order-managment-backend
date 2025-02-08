@@ -6,6 +6,7 @@ import com.foodmanagement.Repository.RoleRepository;
 import com.foodmanagement.Repository.UsersRepository;
 import com.foodmanagement.dto.CommonResponse;
 import com.foodmanagement.dto.RegisterDto;
+import com.foodmanagement.dto.StudentMoreInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,6 +47,11 @@ public class PirivenStudentStrategyImpl implements UserStrategies{
 
         usersRepository.save(user);
         return new CommonResponse<User>(0000,"Successful",user);
+    }
+
+    @Override
+    public CommonResponse saveMoreDetails(StudentMoreInfoDto studentMoreInfoDto) {
+        return null;
     }
 
     @Override

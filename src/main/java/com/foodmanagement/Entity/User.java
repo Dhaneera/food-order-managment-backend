@@ -45,4 +45,7 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private ImageStore imageStore;
+
+    @OneToOne(mappedBy = "user")
+    private StudentMoreInfo studentMoreInfo;
 }

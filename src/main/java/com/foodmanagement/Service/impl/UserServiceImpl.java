@@ -112,7 +112,7 @@ public class UserServiceImpl implements UsersService {
 
     @Override
     public Page getAllStudents(Pageable pageable) {
-        return userRepository.findAllByStatus("ROLE_PIRIVEN_STUDENT","ROLE_STUDENT",pageable);
+        return userRepository.findAllBytatus("ROLE_PIRIVEN_STUDENT","ROLE_STUDENT",pageable);
     }
 
     @Override
