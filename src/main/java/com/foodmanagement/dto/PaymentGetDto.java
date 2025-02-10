@@ -1,5 +1,6 @@
 package com.foodmanagement.dto;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,8 +15,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class PaymentGetDto {
-    private String phoneNumber;
+    @Valid
+    private String created_at;
     private LocalDate startDate;
     private LocalDate endDate;
-
 }

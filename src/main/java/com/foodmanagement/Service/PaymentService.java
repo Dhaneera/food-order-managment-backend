@@ -3,6 +3,8 @@ package com.foodmanagement.Service;
 import com.foodmanagement.dto.CommonResponse;
 import com.foodmanagement.dto.PaymentGetDto;
 
+import java.time.LocalDate;
+
 public interface PaymentService {
-    CommonResponse getPaymentsForPeriod(PaymentGetDto paymentGetDto);
+    CommonResponse getPaymentsForPeriod(String createdBy, String startDate, String endDate);
 }

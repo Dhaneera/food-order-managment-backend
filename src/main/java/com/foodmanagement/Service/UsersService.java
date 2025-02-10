@@ -8,6 +8,8 @@ import com.foodmanagement.dto.UsersDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 public interface UsersService {
 
     User addUser(UsersDto userDto);
@@ -27,5 +29,7 @@ public interface UsersService {
 
     Page<User> searchEmployeesByUsername(String username, Pageable pageable);
 
+
+    Optional<User> getUserByUsername(String username);
 }
 

@@ -16,7 +16,9 @@ public class Orders {
     private String name;
     private String status;
     private Double price;
+    @Column(name = "created_by")
     private String createdBy;
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
     private LocalDateTime orderedAt;
 

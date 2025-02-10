@@ -8,6 +8,7 @@ import com.foodmanagement.dto.PaymentGetDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -15,8 +16,8 @@ import java.util.List;
 public class PaymentServiceImpl implements PaymentService {
     private final OrderRepository orderRepository;
     @Override
-    public CommonResponse getPaymentsForPeriod(PaymentGetDto paymentGetDto) {
-        List<Orders> orders=orderRepository.findAllByCreatedAtBetween(paymentGetDto.getStartDate(),paymentGetDto.getEndDate(),paymentGetDto.getPhoneNumber());
-        return new CommonResponse(0000,"Successful",orders);
+    public CommonResponse getPaymentsForPeriod(String createdBy, String startDate, String endDate) {
+        List<Orders> allByOrderedAtBetween = orderRepository.findAllByOrderedAtBetween(startDate, endDate, createdBy);
+        return  new CommonResponse<>(0000, "Success", allByOrderedAtBetween);
     }
 }

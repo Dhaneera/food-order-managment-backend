@@ -31,6 +31,7 @@ public class UsersDto {
     private LocalDateTime updatedAt;
 
 
+
     public @Valid Long getId() {
         return id;
     }
@@ -38,5 +39,13 @@ public class UsersDto {
     public void setId(@Valid Long id) {
         this.id = id;
     }
+
+    public void setMail(@Valid String mail) {this.mail = mail;}
+
+    public void setStatus(@Valid String status){this.status = status;}
+
+    public void setCreatedAt(@Valid LocalDateTime createdAt) {this.createdAt = createdAt;}
+
+    public void setUpdatedAt(@Valid LocalDateTime updatedAt) {this.updatedAt = updatedAt;}
 
 }

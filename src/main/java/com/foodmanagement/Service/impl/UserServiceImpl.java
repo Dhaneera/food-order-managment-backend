@@ -125,6 +125,11 @@ public class UserServiceImpl implements UsersService {
         return userRepository.findByUsernameContainingIgnoreCaseAndRoleEmployee(username,"ROLE_PIRIVEN_STUDENT","ROLE_STUDENT",pageable);
     }
 
+    @Override
+    public Optional<User> getUserByUsername(String username) {
+       return userRepository.findByUsername(username);
+    }
+
     private User getUserByName(Long id){
         Optional<User> user= userRepository.findById(id);
         return user.orElseGet(User::new);

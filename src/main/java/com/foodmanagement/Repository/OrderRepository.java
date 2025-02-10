@@ -13,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -51,12 +52,15 @@ public interface OrderRepository extends JpaRepository<Orders,String> {
     @Query("Update Orders o set status='COMPLETE' where DATE(o.orderedAt) = DATE(:orderedAt) ")
     void changeOrderStatusByDate(@Param("orderedAt") String orderedAt);
 
-    @Query(value = """
-        SELECT orders_id, name, status, price, ordered_at
-            FROM orders 
-        WHERE created_by = :createdBy AND DATE(ordered_at) BETWEEN DATE(:startDate) AND DATE(:endDate)
-        """, nativeQuery = true)
-    List<Orders> findAllByCreatedAtBetween(LocalDate startDate, LocalDate endDate, String createdBy);
+    @Query("""
+    SELECT o FROM Orders o
+    WHERE o.createdBy = :createdBy
+    AND o.orderedAt BETWEEN DATE(:startDate) AND DATE(:endDate)
+    """)
+    List<Orders> findAllByOrderedAtBetween(@Param("startDate") String startDate,
+                                           @Param("endDate") String endDate,
+                                           @Param("createdBy") String createdBy);
+
 }
 
 

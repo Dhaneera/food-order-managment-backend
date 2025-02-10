@@ -1,5 +1,6 @@
 package com.foodmanagement.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -22,5 +23,6 @@ public class MoreEmpInfo {
 
     @OneToOne
     @JoinColumn(name = "userId")
+    @JsonIgnore
     private User user;
 }

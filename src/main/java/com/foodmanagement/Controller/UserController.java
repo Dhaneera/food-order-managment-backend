@@ -81,6 +81,10 @@ public class UserController {
         Page<User> users = userService.searchEmployeesByUsername(username, pageable);
         return ResponseEntity.ok(users);
     }
-
-
+    @GetMapping("/getByUsername")
+    public ResponseEntity<User> getUserById(@RequestParam String username) {
+        Optional<User> user = userService.getUserByUsername(username);
+        return user.map(ResponseEntity::ok)
+               .orElse(ResponseEntity.status(404).build());
+    }
 }
