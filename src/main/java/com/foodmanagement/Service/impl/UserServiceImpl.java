@@ -8,6 +8,7 @@ import com.foodmanagement.Repository.UsersRepository;
 import com.foodmanagement.Service.UsersService;
 import com.foodmanagement.dto.GetUserByStatusDto;
 import com.foodmanagement.dto.UsersDto;
+import com.foodmanagement.dto.UpdatePasswordDto;
 import com.foodmanagement.strategies.UserStrategies;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -129,6 +130,24 @@ public class UserServiceImpl implements UsersService {
     public Optional<User> getUserByUsername(String username) {
        return userRepository.findByUsername(username);
     }
+
+    @Override
+    public boolean updatePasswordByMail(UpdatePasswordDto updatePasswordDto) {
+        Optional<User> userOptional = userRepository.findByMail(updatePasswordDto.getMail());
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            // Update password directly (without old password check)
+            user.setPassword(passwordEncoder.encode(updatePasswordDto.getNewPassword()));
+            user.setUpdatedAt(java.time.LocalDateTime.now());
+            userRepository.save(user);
+            return true;
+        }
+
+        throw new IllegalStateException("User not found");
+    }
+
 
     private User getUserByName(Long id){
         Optional<User> user= userRepository.findById(id);

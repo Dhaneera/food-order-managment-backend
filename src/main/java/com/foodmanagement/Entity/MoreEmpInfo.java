@@ -16,7 +16,7 @@ import lombok.Setter;
 public class MoreEmpInfo {
     @Id
     private String nic;
-    private String email;
+    private String mail;
     private String department;
     private String gender;
     private boolean isInternal;

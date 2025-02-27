@@ -5,6 +5,7 @@ package com.foodmanagement.Service;
 import com.foodmanagement.Entity.User;
 import com.foodmanagement.dto.GetUserByStatusDto;
 import com.foodmanagement.dto.UsersDto;
+import com.foodmanagement.dto.UpdatePasswordDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -31,5 +32,8 @@ public interface UsersService {
 
 
     Optional<User> getUserByUsername(String username);
+
+    boolean updatePasswordByMail(UpdatePasswordDto updatePasswordDto);
+
 }
 

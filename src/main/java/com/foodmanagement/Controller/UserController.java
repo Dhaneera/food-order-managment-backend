@@ -4,6 +4,7 @@ package com.foodmanagement.Controller;
 import com.foodmanagement.Entity.User;
 import com.foodmanagement.Service.UsersService;
 import com.foodmanagement.dto.GetUserByStatusDto;
+import com.foodmanagement.dto.UpdatePasswordDto;
 import com.foodmanagement.dto.UsersDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,4 +88,15 @@ public class UserController {
         return user.map(ResponseEntity::ok)
                .orElse(ResponseEntity.status(404).build());
     }
+
+    @PutMapping("/resetPassword")
+    public ResponseEntity<String> resetPassword( @RequestBody UpdatePasswordDto updatePasswordDto) {
+        try {
+            userService.updatePasswordByMail(updatePasswordDto);
+            return ResponseEntity.ok("Password reset successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
+        }
+    }
+
 }

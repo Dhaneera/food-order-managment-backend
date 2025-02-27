@@ -58,6 +58,10 @@ public class SecurityConfig {
                                 .requestMatchers("/api/image/base64/{id}").permitAll()
                                 .requestMatchers("/meal/**").permitAll()
                                 .requestMatchers("/api/payments/**").permitAll()
+                                .requestMatchers("/api/Mailing/**").permitAll()
+                                .requestMatchers("/send-otp").permitAll()
+                                .requestMatchers("/api/Mailing/check-mail").permitAll()
+                                .requestMatchers("/api/users/resetPassword").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults()); // Enable HTTP Basic authentication if needed

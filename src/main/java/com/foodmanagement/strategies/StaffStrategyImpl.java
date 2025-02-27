@@ -85,7 +85,7 @@ public class StaffStrategyImpl implements UserStrategies {
         MoreEmpInfo moreEmpInfo = new MoreEmpInfo();
         moreEmpInfo.setDepartment(employeeMoreInfoDto.getDepartment());
         moreEmpInfo.setNic(employeeMoreInfoDto.getNic());
-        moreEmpInfo.setEmail(employeeMoreInfoDto.getEmail());
+        moreEmpInfo.setMail(employeeMoreInfoDto.getEmail());
         moreEmpInfo.setInternal(employeeMoreInfoDto.isInternal());
         moreEmpInfo.setGender(employeeMoreInfoDto.getGender());
 
