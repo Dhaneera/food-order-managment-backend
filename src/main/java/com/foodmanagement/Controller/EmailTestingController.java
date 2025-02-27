@@ -11,7 +11,7 @@ import java.util.Optional;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/Mailing")
-public class    EmailTestingController {
+public class EmailTestingController {
     private final EmailServiceImpl emailService;
     private final UsersRepository usersRepository;
 

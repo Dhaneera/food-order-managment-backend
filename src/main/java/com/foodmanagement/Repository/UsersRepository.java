@@ -43,7 +43,11 @@ public interface UsersRepository extends JpaRepository<User,Long> {
     @Query("SELECT u FROM User u JOIN u.roles r WHERE u.mail = :mail")
     Optional<User> findByEmail(@Param("mail") String mail);
 
-
+    @Modifying
+    @Transactional
+    @Query("UPDATE User u SET u.mail=:mail WHERE u.id=:id")
+    int changeMail(@Param("id") Long id,
+                   @Param("mail") String mail);
 
     @Query("SELECT u FROM User u WHERE u.mail = :mail")
     Optional<User> findByMail(@Param("mail") String mail);

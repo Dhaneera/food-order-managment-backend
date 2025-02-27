@@ -90,6 +90,10 @@ public class StaffStrategyImpl implements UserStrategies {
         moreEmpInfo.setGender(employeeMoreInfoDto.getGender());
 
         Optional<User> optionalUserPresent =usersRepository.findById(employeeMoreInfoDto.getUserId());
+        int effectedRowCount=usersRepository.changeMail(employeeMoreInfoDto.getUserId(), employeeMoreInfoDto.getEmail());
+        if(effectedRowCount<=0){
+            throw new RuntimeException("mail cannot be update");
+        }
         if(optionalUserPresent.isPresent()){
             moreEmpInfo.setUser(optionalUserPresent.get());
         }else{
