@@ -51,5 +51,25 @@ public interface UsersRepository extends JpaRepository<User,Long> {
 
     @Query("SELECT u FROM User u WHERE u.mail = :mail")
     Optional<User> findByMail(@Param("mail") String mail);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE student_more_info, users FROM student_more_info INNER JOIN users ON student_more_info.user_id = users.user_id WHERE users.user_id = :id", nativeQuery = true)
+    void deleteStudent(@Param("id") Long id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM user_roles WHERE user_id = :id", nativeQuery = true)
+    void deleteUserRoles(@Param("id") Long id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE more_emp_info, users FROM more_emp_info INNER JOIN users ON more_emp_info.user_id = users.user_id WHERE users.user_id = :id", nativeQuery = true)
+    void deleteEmployees(Long id);
+
+//    @Modifying
+//    @Transactional
+//    @Query("DELETE more_emp_info,users using employee_more_info inner join on employee_more_info.user_id=users.user_id where user_id=:id")
+//    void deleteEmployees(@Param("id") Long id);
 }
 

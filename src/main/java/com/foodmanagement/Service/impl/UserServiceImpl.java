@@ -4,6 +4,7 @@ package com.foodmanagement.Service.impl;
 import com.foodmanagement.Entity.Role;
 import com.foodmanagement.Entity.User;
 import com.foodmanagement.Repository.RoleRepository;
+import com.foodmanagement.Repository.StudentMoreInfoRepository;
 import com.foodmanagement.Repository.UsersRepository;
 import com.foodmanagement.Service.UsersService;
 import com.foodmanagement.dto.GetUserByStatusDto;
@@ -28,13 +29,15 @@ public class UserServiceImpl implements UsersService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final Map<String, UserStrategies> userStrategiesHashMap;
+    private final StudentMoreInfoRepository studentMoreInfoRepository;
 
 
-    public UserServiceImpl(UsersRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, Map<String, UserStrategies> userStrategiesHashMap) {
+    public UserServiceImpl(UsersRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, Map<String, UserStrategies> userStrategiesHashMap, StudentMoreInfoRepository studentMoreInfoRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.userStrategiesHashMap = userStrategiesHashMap;
+        this.studentMoreInfoRepository = studentMoreInfoRepository;
     }
 
     @Override
@@ -76,7 +79,14 @@ public class UserServiceImpl implements UsersService {
     }
     @Override
     public boolean deleteUser(Long id) {
-        userRepository.deleteById(id);
+        int count=studentMoreInfoRepository.getStudentCount(id);
+        if(count>0) {
+            userRepository.deleteUserRoles(id);
+            userRepository.deleteStudent(id);
+        }else{
+            userRepository.deleteUserRoles(id);
+            userRepository.deleteEmployees(id);
+        }
         return true;
     }
 
