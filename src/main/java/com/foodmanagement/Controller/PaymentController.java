@@ -26,4 +26,10 @@ public class PaymentController {
         return paymentService.getPaymentsForPeriod(createdBy, startDate, endDate);
 
     }
+    @GetMapping("/get-all-for-period/{startDate}/{endDate}")
+    public CommonResponse getAllPaymentsOfEmployees(@PathVariable String startDate,@PathVariable String endDate ){
+        log("getAllPaymentsOfEmployeesForPeriod");
+        return paymentService.getPaymentsForSalaryDeductionAll(startDate, endDate);
+
+    }
 }

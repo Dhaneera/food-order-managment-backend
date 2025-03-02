@@ -7,4 +7,6 @@ import java.time.LocalDate;
 
 public interface PaymentService {
     CommonResponse getPaymentsForPeriod(String createdBy, String startDate, String endDate);
+
+    CommonResponse getPaymentsForSalaryDeductionAll(String startDate, String endDate);
 }

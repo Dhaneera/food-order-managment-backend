@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -52,15 +53,20 @@ public interface OrderRepository extends JpaRepository<Orders,String> {
     @Query("Update Orders o set status='COMPLETE' where DATE(o.orderedAt) = DATE(:orderedAt) ")
     void changeOrderStatusByDate(@Param("orderedAt") String orderedAt);
 
-    @Query("""
-    SELECT o FROM Orders o
-    WHERE o.createdBy = :createdBy
-    AND o.orderedAt BETWEEN DATE(:startDate) AND DATE(:endDate)
-    """)
-    List<Orders> findAllByOrderedAtBetween(@Param("startDate") String startDate,
+    @Query(value = """
+    SELECT o.created_by,o.price,o.created_at,o.orders_id,u.name FROM orders o,users u
+    WHERE o.ordered_at BETWEEN DATE(:startDate) AND DATE(:endDate) AND o.created_by=u.username AND o.created_by=:createdBy
+    """,nativeQuery = true)
+    List<Map> findAllByOrderedAtBetween(@Param("startDate") String startDate,
                                            @Param("endDate") String endDate,
                                            @Param("createdBy") String createdBy);
 
+    @Query(value = """
+    SELECT o.created_by,o.price,o.created_at,o.orders_id,u.name FROM orders o,users u
+    WHERE o.ordered_at BETWEEN DATE(:startDate) AND DATE(:endDate) AND o.created_by=u.username
+    """,nativeQuery = true)
+    List<Map> findAllByOrderedAt(@Param("startDate") String startDate,
+                                 @Param("endDate") String endDate);
 }
 
 
