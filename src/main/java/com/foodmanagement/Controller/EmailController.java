@@ -11,12 +11,12 @@ import java.util.Optional;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/Mailing")
-public class EmailTestingController {
+public class EmailController {
     private final EmailServiceImpl emailService;
     private final UsersRepository usersRepository;
 
 
-    public EmailTestingController(EmailServiceImpl emailService, UsersRepository usersRepository) {
+    public EmailController(EmailServiceImpl emailService, UsersRepository usersRepository) {
         this.emailService = emailService;
         this.usersRepository = usersRepository;
     }
