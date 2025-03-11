@@ -14,6 +14,7 @@ import lombok.Setter;
 public class StudentMoreInfoDto {
     private long userId;
     private String studentId;
+    private String mail;
     private String faculty;
     private String gender;
     private String batch;

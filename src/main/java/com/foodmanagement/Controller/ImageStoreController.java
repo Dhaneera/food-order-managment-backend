@@ -22,13 +22,13 @@ public class ImageStoreController {
     private ImageStoreService imageStoreService;
 
     @PostMapping("/upload")
-    public ResponseEntity<ImageStore> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("id") long id) {
+    public ResponseEntity uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("id") long id) {
             try{
             ImageStore savedImage = imageStoreService.saveImage(file,id);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_JPEG);
 
-            return new ResponseEntity<>(savedImage,headers,HttpStatus.OK);
+            return new ResponseEntity<>(savedImage.getFileData(),headers,HttpStatus.OK);
             } catch (IOException e) {
                 log.error("Error uploading file {}", e.getMessage());
                 throw new RuntimeException(e);

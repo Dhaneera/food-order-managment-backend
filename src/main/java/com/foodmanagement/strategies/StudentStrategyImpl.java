@@ -56,12 +56,17 @@ public class StudentStrategyImpl implements UserStrategies {
     public CommonResponse saveMoreDetails(StudentMoreInfoDto studentMoreInfoDto) {
         StudentMoreInfo studentMoreInfo = new StudentMoreInfo();
         studentMoreInfo.setStudentId(studentMoreInfoDto.getStudentId());
+        studentMoreInfo.setMail(studentMoreInfoDto.getMail());
         studentMoreInfo.setBatch(studentMoreInfoDto.getBatch());
         studentMoreInfo.setFaculty(studentMoreInfoDto.getFaculty());
         studentMoreInfo.setGender(studentMoreInfoDto.getGender());
         studentMoreInfo.setStream(studentMoreInfoDto.getStream());
 
         Optional<User> optionalUserPresent =usersRepository.findById(studentMoreInfoDto.getUserId());
+        int effectedRowCount = usersRepository.changeMail(studentMoreInfoDto.getUserId(), studentMoreInfoDto.getMail());
+        if(effectedRowCount<=0){
+            throw new RuntimeException("mail cannot be update");
+        }
         if(optionalUserPresent.isPresent()){
             studentMoreInfo.setUser(optionalUserPresent.get());
         }else{

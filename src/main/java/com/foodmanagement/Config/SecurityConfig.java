@@ -53,7 +53,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/users/**").permitAll()
                                 .requestMatchers("/api/users/type{type}").permitAll()
                                 .requestMatchers("/api/images/**").permitAll()
-                                .requestMatchers("/api//api/images/upload").permitAll()
+                                .requestMatchers("/api/images/upload").permitAll()
                                 .requestMatchers("/api/images//{id}").permitAll()
                                 .requestMatchers("/api/image/base64/{id}").permitAll()
                                 .requestMatchers("/meal/**").permitAll()

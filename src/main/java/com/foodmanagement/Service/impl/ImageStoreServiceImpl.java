@@ -33,7 +33,7 @@ public class ImageStoreServiceImpl implements ImageStoreService {
         image.setUser(user);
         Optional<ImageStore> imageStore=imageStoreRepository.findByUserId(id);
 
-        if(ObjectUtils.isEmpty(imageStore.get().getId())){
+        if(ObjectUtils.isEmpty(imageStore)){
             return imageStoreRepository.save(image);
         }else {
             imageStoreRepository.deleteByUserId(id);
