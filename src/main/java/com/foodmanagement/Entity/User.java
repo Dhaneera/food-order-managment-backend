@@ -1,5 +1,6 @@
 package com.foodmanagement.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -44,11 +45,14 @@ public class User {
     private List<Role>roles= new ArrayList<>();
 
     @OneToOne(mappedBy = "user")
+    @JsonIgnore
     private ImageStore imageStore;
 
     @OneToOne(mappedBy = "user")
+    @JsonIgnore
     private StudentMoreInfo studentMoreInfo;
 
     @OneToOne(mappedBy = "user")
+    @JsonIgnore
     private MoreEmpInfo moreEmpInfo;
 }

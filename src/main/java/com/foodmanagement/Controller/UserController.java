@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -58,9 +60,14 @@ public class UserController {
         return page;
     }
 
-    @GetMapping("/getAllEmployees")
-    public Page<User> getAllEmployees(Pageable pageable) {
-        return userService.getAllEmployees(pageable);
+    @GetMapping("/getAllEmployees/{role}/{pageNum}")
+    public List<Map<String, Object>> getAllEmployees(@PathVariable String role, @PathVariable String pageNum) {
+        return userService.getAllEmployees(role, pageNum);
+    }
+
+    @GetMapping("/getAllStudents/{role}/{pageNum}")
+    public List<Map<String, Object>> getAllStudents(@PathVariable String role, @PathVariable String pageNum) {
+        return userService.getAllStudents(role, pageNum);
     }
 
     @DeleteMapping("/delete/{id}")

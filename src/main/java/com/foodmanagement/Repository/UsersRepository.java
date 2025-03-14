@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -22,6 +24,8 @@ public interface UsersRepository extends JpaRepository<User,Long> {
     Page<User> findAllByStatusAndRole(@Param("status") String status,
                                       @Param("roleName") String roleName,
                                       Pageable pageable);
+
+
     @Query("SELECT u FROM User u JOIN u.roles r WHERE LOWER(u.username) LIKE LOWER(CONCAT('%', :username, '%')) AND r.name != :roleName")
     Page<User> findByUsernameContainingIgnoreCaseAndRoleNot(@Param("username") String username, @Param("roleName") String roleName, Pageable pageable);
 
@@ -34,8 +38,8 @@ public interface UsersRepository extends JpaRepository<User,Long> {
     int changeStatus(@Param("id") Long id,
                      @Param("status") String status);
 
-    @Query("SELECT u FROM User u JOIN u.roles r WHERE r.name = :roleName")
-    Page<User> findAllByRole(@Param("roleName") String roleName,Pageable pageable);
+//    @Query("SELECT u FROM User u JOIN u.roles r WHERE r.name = :roleName and LIMIT 10 OFFSET 0")
+//    Page<User> findAllByRole(@Param("roleName") String roleName,Pageable pageable);
 
     @Query("SELECT u FROM User u JOIN u.roles r WHERE r.name IN( :roleName,:roleName2)")
     Page<User> findAllBytatus(@Param("roleName") String role1,@Param("roleName2") String role2,Pageable pageable);
@@ -66,6 +70,17 @@ public interface UsersRepository extends JpaRepository<User,Long> {
     @Transactional
     @Query(value = "DELETE more_emp_info, users FROM more_emp_info INNER JOIN users ON more_emp_info.user_id = users.user_id WHERE users.user_id = :id", nativeQuery = true)
     void deleteEmployees(Long id);
+
+    @Query(value = "SELECT us.name, us.mail, us.username, us.user_id\n" +
+            "FROM users us\n" +
+            "JOIN user_roles ur ON ur.user_id = us.user_id\n" +
+            "JOIN roles rs ON rs.role_id = ur.role_id\n" +
+            "WHERE rs.name = ':role'\n" +
+            "LIMIT 10 OFFSET 0;",nativeQuery = true)
+    Map findAllEmployees(@Param("role") String role);
+
+
+
 
 //    @Modifying
 //    @Transactional

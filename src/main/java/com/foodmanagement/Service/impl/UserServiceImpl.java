@@ -5,6 +5,7 @@ import com.foodmanagement.Entity.Role;
 import com.foodmanagement.Entity.User;
 import com.foodmanagement.Repository.RoleRepository;
 import com.foodmanagement.Repository.StudentMoreInfoRepository;
+import com.foodmanagement.Repository.UserNativeRepository;
 import com.foodmanagement.Repository.UsersRepository;
 import com.foodmanagement.Service.UsersService;
 import com.foodmanagement.dto.GetUserByStatusDto;
@@ -30,14 +31,16 @@ public class UserServiceImpl implements UsersService {
     private final RoleRepository roleRepository;
     private final Map<String, UserStrategies> userStrategiesHashMap;
     private final StudentMoreInfoRepository studentMoreInfoRepository;
+    private final UserNativeRepository userNativeRepository;
 
 
-    public UserServiceImpl(UsersRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, Map<String, UserStrategies> userStrategiesHashMap, StudentMoreInfoRepository studentMoreInfoRepository) {
+    public UserServiceImpl(UsersRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, Map<String, UserStrategies> userStrategiesHashMap, StudentMoreInfoRepository studentMoreInfoRepository, UserNativeRepository userNativeRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.userStrategiesHashMap = userStrategiesHashMap;
         this.studentMoreInfoRepository = studentMoreInfoRepository;
+        this.userNativeRepository = userNativeRepository;
     }
 
     @Override
@@ -127,8 +130,13 @@ public class UserServiceImpl implements UsersService {
     }
 
     @Override
-    public Page<User> getAllEmployees(Pageable pageable) {
-        return userRepository.findAllByRole("ROLE_STAFF",pageable);
+    public List<Map<String, Object>> getAllEmployees(String role, String pageNum) {
+       return userNativeRepository.getAllUsersAccordingToRole(role, pageNum);
+    }
+
+    @Override
+    public List<Map<String, Object>> getAllStudents(String role, String pageNum) {
+        return userNativeRepository.getAllUsersAccordingToRole(role, pageNum);
     }
 
     @Override

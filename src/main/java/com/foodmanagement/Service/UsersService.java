@@ -9,6 +9,8 @@ import com.foodmanagement.dto.UpdatePasswordDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface UsersService {
@@ -26,7 +28,8 @@ public interface UsersService {
 
     Page getAllStudents(Pageable pageable);
 
-    Page<User> getAllEmployees(Pageable pageable);
+    List<Map<String, Object>> getAllEmployees(String role, String pageNum);
+    List<Map<String, Object>> getAllStudents(String role, String pageNum);
 
     Page<User> searchEmployeesByUsername(String username, Pageable pageable);
 

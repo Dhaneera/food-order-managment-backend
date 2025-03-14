@@ -62,6 +62,7 @@ public class SecurityConfig {
                                 .requestMatchers("/send-otp").permitAll()
                                 .requestMatchers("/api/Mailing/check-mail").permitAll()
                                 .requestMatchers("/api/users/resetPassword").permitAll()
+                                .requestMatchers("/api/users/getAllEmployees/{role}/{pageNum}").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults()); // Enable HTTP Basic authentication if needed
