@@ -1,9 +1,8 @@
 package com.foodmanagement.Repository;
 
-import java.util.List;
-import java.util.Map;
+import com.foodmanagement.dto.PaginatedResponse;
 
 public interface UserNativeRepository {
 
-    List<Map<String, Object>> getAllUsersAccordingToRole(String role, String page);
+    PaginatedResponse<?> getAllUsersAccordingToRole(String role, String page, String size);
 }

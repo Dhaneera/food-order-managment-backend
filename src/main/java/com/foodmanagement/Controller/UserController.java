@@ -4,6 +4,7 @@ package com.foodmanagement.Controller;
 import com.foodmanagement.Entity.User;
 import com.foodmanagement.Service.UsersService;
 import com.foodmanagement.dto.GetUserByStatusDto;
+import com.foodmanagement.dto.PaginatedResponse;
 import com.foodmanagement.dto.UpdatePasswordDto;
 import com.foodmanagement.dto.UsersDto;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -60,13 +59,13 @@ public class UserController {
         return page;
     }
 
-    @GetMapping("/getAllEmployees/{role}/{pageNum}")
-    public List<Map<String, Object>> getAllEmployees(@PathVariable String role, @PathVariable String pageNum) {
-        return userService.getAllEmployees(role, pageNum);
+    @GetMapping("/getAllEmployees")
+    public PaginatedResponse<?> getAllEmployees(@RequestParam String page, @RequestParam String size) {
+        return userService.getAllEmployees(page, size);
     }
 
     @GetMapping("/getAllStudents/{role}/{pageNum}")
-    public List<Map<String, Object>> getAllStudents(@PathVariable String role, @PathVariable String pageNum) {
+    public PaginatedResponse<?> getAllStudents(@PathVariable String role, @PathVariable String pageNum) {
         return userService.getAllStudents(role, pageNum);
     }
 

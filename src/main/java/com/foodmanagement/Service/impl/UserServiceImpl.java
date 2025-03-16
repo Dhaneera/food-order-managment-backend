@@ -9,6 +9,7 @@ import com.foodmanagement.Repository.UserNativeRepository;
 import com.foodmanagement.Repository.UsersRepository;
 import com.foodmanagement.Service.UsersService;
 import com.foodmanagement.dto.GetUserByStatusDto;
+import com.foodmanagement.dto.PaginatedResponse;
 import com.foodmanagement.dto.UsersDto;
 import com.foodmanagement.dto.UpdatePasswordDto;
 import com.foodmanagement.strategies.UserStrategies;
@@ -86,9 +87,11 @@ public class UserServiceImpl implements UsersService {
         if(count>0) {
             userRepository.deleteUserRoles(id);
             userRepository.deleteStudent(id);
+            userRepository.deleteById(id);
         }else{
             userRepository.deleteUserRoles(id);
             userRepository.deleteEmployees(id);
+            userRepository.deleteById(id);
         }
         return true;
     }
@@ -130,13 +133,14 @@ public class UserServiceImpl implements UsersService {
     }
 
     @Override
-    public List<Map<String, Object>> getAllEmployees(String role, String pageNum) {
-       return userNativeRepository.getAllUsersAccordingToRole(role, pageNum);
+    public PaginatedResponse<?> getAllEmployees(String page, String size) {
+       return userNativeRepository.getAllUsersAccordingToRole("ROLE_STAFF",page,size);
     }
 
     @Override
-    public List<Map<String, Object>> getAllStudents(String role, String pageNum) {
-        return userNativeRepository.getAllUsersAccordingToRole(role, pageNum);
+    public PaginatedResponse<?> getAllStudents(String role, String pageNum) {
+//        return userNativeRepository.getAllUsersAccordingToRole(role, pageNum, size);
+        return null;
     }
 
     @Override

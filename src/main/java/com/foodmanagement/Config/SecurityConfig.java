@@ -63,6 +63,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/Mailing/check-mail").permitAll()
                                 .requestMatchers("/api/users/resetPassword").permitAll()
                                 .requestMatchers("/api/users/getAllEmployees/{role}/{pageNum}").permitAll()
+                                .requestMatchers("/api/users/type").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults()); // Enable HTTP Basic authentication if needed
