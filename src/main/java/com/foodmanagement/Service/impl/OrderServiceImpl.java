@@ -3,10 +3,12 @@ package com.foodmanagement.Service.impl;
 import com.foodmanagement.Entity.Meal;
 import com.foodmanagement.Entity.Orders;
 import com.foodmanagement.Repository.MealRepository;
+import com.foodmanagement.Repository.NativeOrderRepository;
 import com.foodmanagement.Repository.OrderRepository;
 import com.foodmanagement.Service.OrderService;
 import com.foodmanagement.dto.MealDto;
 import com.foodmanagement.dto.OrdersDto;
+import com.foodmanagement.dto.PaginatedResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
@@ -14,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.time.LocalDate;
 import java.util.*;
 
 import static com.foodmanagement.util.RandomIdGenerator.createOrderId;
@@ -25,6 +26,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final MealRepository mealRepository;
+    private final NativeOrderRepository nativeOrderRepository;
 
 
     @Override
@@ -101,8 +103,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<Orders>getOrdersCreatedBy(String CreatedBy, Pageable pageable){
-        return orderRepository.findByCreatedBy(CreatedBy,pageable);
+    public PaginatedResponse<?> getOrdersCreatedBy(String createdBy, Pageable pageable){
+        return nativeOrderRepository.getAllOrders(createdBy,pageable.getPageNumber());
+
     }
 
     @Override

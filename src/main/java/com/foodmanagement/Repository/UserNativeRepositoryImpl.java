@@ -22,6 +22,10 @@ public class UserNativeRepositoryImpl implements UserNativeRepository {
 
         log.info("query executed to retrive employees {}",queryToExecute);
         List<Map<String,Object>> mapListOfAllEmployeeData=jdbcTemplate.queryForList(queryToExecute);
+        return getPaginatedResponse(mapListOfAllEmployeeData);
+    }
+
+    public static PaginatedResponse<?> getPaginatedResponse(List<Map<String, Object>> mapListOfAllEmployeeData) {
         PaginatedResponse<?> response=new PaginatedResponse<>();
         List listOfContent = new ArrayList();
         mapListOfAllEmployeeData.stream().forEach((objectMap)->{

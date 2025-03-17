@@ -2,11 +2,10 @@ package com.foodmanagement.Service;
 
 import com.foodmanagement.Entity.Orders;
 import com.foodmanagement.dto.OrdersDto;
+import com.foodmanagement.dto.PaginatedResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +15,7 @@ public interface OrderService {
     Page<Orders>getAllOrders(Pageable pageable);
     Optional<Orders> getOrderById(String id);
     Page<Orders> getOrdersByStatus(String status, Pageable pageable);
-     Page<Orders>getOrdersCreatedBy(String CreatedBy, Pageable pageable);
+     PaginatedResponse<?> getOrdersCreatedBy(String CreatedBy, Pageable pageable);
      HashMap<String, Integer> getCountOrderByType(String orderAt , String type);
      boolean changeOrderStatus(String localDate);
 

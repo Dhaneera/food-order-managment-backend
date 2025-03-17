@@ -1,9 +1,9 @@
 package com.foodmanagement.Controller;
 
-import com.foodmanagement.Entity.Meal;
 import com.foodmanagement.Entity.Orders;
 import com.foodmanagement.Service.OrderService;
 import com.foodmanagement.dto.OrdersDto;
+import com.foodmanagement.dto.PaginatedResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -69,8 +68,8 @@ public class OrderController {
         return ResponseEntity.ok(orders);
     }
     @GetMapping("/createdBy/{createdBy}")
-    public ResponseEntity<Page<Orders>> getOrdersCreatedBy(@PathVariable String createdBy, Pageable pageable) {
-        Page<Orders> orders = orderService.getOrdersCreatedBy(createdBy, pageable);
+    public ResponseEntity<PaginatedResponse<?>> getOrdersCreatedBy(@PathVariable String createdBy, Pageable pageable) {
+        PaginatedResponse<?> orders = orderService.getOrdersCreatedBy(createdBy, pageable);
         return ResponseEntity.ok(orders);
     }
     @GetMapping("/count/{orderAt}/{type}")
