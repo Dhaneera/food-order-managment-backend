@@ -13,7 +13,7 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // Allow all origins (you can restrict this to a specific domain)
-        configuration.addAllowedOrigin("http://localhost:3000"); // Change to your frontend URL
+        configuration.addAllowedOrigin("https://food-order-managment-client.vercel.app"); // Change to your frontend URL
         configuration.addAllowedMethod("*");  // Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
         configuration.addAllowedHeader("*");  // Allow all headers
         configuration.setAllowCredentials(true);  // Allow credentials like cookies and authorization headers

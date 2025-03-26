@@ -36,6 +36,7 @@ public interface UsersService {
     Optional<User> getUserByUsername(String username);
 
     boolean updatePasswordByMail(UpdatePasswordDto updatePasswordDto);
+     void updateUserContactInfo(Long userId, String phoneNumber, String mail);
 
 }
 

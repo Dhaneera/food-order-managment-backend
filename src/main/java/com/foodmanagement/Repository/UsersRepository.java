@@ -79,6 +79,10 @@ public interface UsersRepository extends JpaRepository<User,Long> {
             "LIMIT 10 OFFSET 0;",nativeQuery = true)
     Map findAllEmployees(@Param("role") String role);
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE User u SET u.phoneNumber = :phoneNumber, u.mail = :mail, u.updatedAt = CURRENT_TIMESTAMP WHERE u.id = :userId")
+    int updateUserContactInfo(@Param("userId") Long userId, @Param("phoneNumber") String phoneNumber, @Param("mail") String mail);
 
 
 

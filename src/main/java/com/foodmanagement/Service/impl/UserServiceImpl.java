@@ -175,4 +175,11 @@ public class UserServiceImpl implements UsersService {
         Optional<User> user= userRepository.findById(id);
         return user.orElseGet(User::new);
     }
+    @Override
+    public void updateUserContactInfo(Long userId, String phoneNumber, String mail) {
+        int updated = userRepository.updateUserContactInfo(userId, phoneNumber, mail);
+        if (updated == 0) {
+            throw new RuntimeException("User not found or update failed");
+        }
+    }
 }

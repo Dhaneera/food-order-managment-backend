@@ -3,10 +3,7 @@ package com.foodmanagement.Controller;
 
 import com.foodmanagement.Entity.User;
 import com.foodmanagement.Service.UsersService;
-import com.foodmanagement.dto.GetUserByStatusDto;
-import com.foodmanagement.dto.PaginatedResponse;
-import com.foodmanagement.dto.UpdatePasswordDto;
-import com.foodmanagement.dto.UsersDto;
+import com.foodmanagement.dto.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -105,4 +102,10 @@ public class UserController {
         }
     }
 
+    @PutMapping("/{userId}/contact-info")
+    public ResponseEntity<String> updateContactInfo(@PathVariable Long userId, @RequestBody UserContactUpdateRequest request) {
+        userService.updateUserContactInfo(userId, request.getPhoneNumber(), request.getMail());
+        return ResponseEntity.ok("User contact info updated successfully");
+    }
+    
 }
